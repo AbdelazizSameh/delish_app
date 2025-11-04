@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'views/discovery_view.dart';
+
 void main() {
   runApp(const DelishApp());
 }
@@ -9,6 +11,11 @@ class DelishApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: FlutterLogo());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: "Rubik-Regular"),
+
+      home: const DiscoveryView(),
+    );
   }
 }
