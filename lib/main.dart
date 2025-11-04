@@ -14,7 +14,6 @@ class DelishApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Rubik-Regular"),
-
       home: const DiscoveryView(),
     );
   }
