@@ -16,7 +16,9 @@ class DelishApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Rubik-Regular",
         scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarThemeData(backgroundColor: Colors.white),
       ),
+
       home: const DiscoveryView(),
     );
   }
