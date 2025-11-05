@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../widgets/discovery_view_body.dart';
 
 class DiscoveryView extends StatelessWidget {

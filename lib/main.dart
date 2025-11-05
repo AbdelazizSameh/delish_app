@@ -13,7 +13,10 @@ class DelishApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: "Rubik-Regular"),
+      theme: ThemeData(
+        fontFamily: "Rubik-Regular",
+        scaffoldBackgroundColor: Colors.white,
+      ),
       home: const DiscoveryView(),
     );
   }
