@@ -1,3 +1,4 @@
+import 'package:delish_app/views/profile_view.dart';
 import 'package:flutter/material.dart';
 import '../widgets/custom_buttom_navigation_bar.dart';
 import '../widgets/discovery_view_body.dart';
@@ -17,7 +18,7 @@ class _DiscoveryViewState extends State<DiscoveryView> {
     Center(child: Text('Restaurants')),
     Center(child: Text('Search')),
     Center(child: Text('Favorite')),
-    Center(child: Text('Profile')),
+    ProfileView(),
   ];
 
   void _onItemTapped(int index) {
