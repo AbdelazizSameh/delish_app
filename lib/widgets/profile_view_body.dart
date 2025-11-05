@@ -10,13 +10,14 @@ class ProfileViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(
-          child: Column(
-            children: [const ProfileHeader(), const SizedBox(height: 16)],
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: ProfileHeader(),
           ),
         ),
+
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 19),
           sliver: SliverList.builder(
@@ -32,13 +33,12 @@ class ProfileViewBody extends StatelessWidget {
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 20)),
-
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 19),
+            padding: EdgeInsets.symmetric(horizontal: 19),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: SizedBox(width: 150, child: const CustomLogoutButton()),
+              child: SizedBox(width: 150, child: CustomLogoutButton()),
             ),
           ),
         ),

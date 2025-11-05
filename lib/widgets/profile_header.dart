@@ -11,7 +11,7 @@ class ProfileHeader extends StatelessWidget {
         const CircleAvatar(
           radius: 50,
           backgroundImage: NetworkImage(
-            "https://placehold.co/100x100/F9A825/FFFFFF?text=KA&font=roboto",
+            'https://herway.net/wp-content/uploads/2022/03/serious-man-with-glasses-standing-and-looking-at-distance-1-1024x684.jpg',
           ),
         ),
         const SizedBox(height: 12),

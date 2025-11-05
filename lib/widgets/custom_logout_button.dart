@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -22,7 +21,7 @@ class CustomLogoutButton extends StatelessWidget {
       label: const Text(
         "Log out",
         style: TextStyle(
-          color: Color(0xffFE8800),
+          color: color,
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
