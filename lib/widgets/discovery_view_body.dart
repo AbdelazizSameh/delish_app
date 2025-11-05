@@ -69,16 +69,19 @@ class DiscoveryViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      physics: BouncingScrollPhysics(),
       slivers: [
         const CustomDiscoveryAppBar(),
         const SliverToBoxAdapter(child: SizedBox(height: 8)),
         const SliverToBoxAdapter(child: CustomCarouselSliderBuilder()),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 19),
+            padding: const EdgeInsetsGeometry.symmetric(horizontal: 19),
             child: Column(
               children: [
                 const SectionHeader(title: "Fastest delivery 🔥"),
+                FastestDeliveryListView(items: items),
+                const SectionHeader(title: "Popular items 👏"),
                 FastestDeliveryListView(items: items),
               ],
             ),

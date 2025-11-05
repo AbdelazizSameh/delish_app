@@ -30,7 +30,7 @@ class CarouselItem extends StatelessWidget {
                   ),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const SizedBox(),
                     const Column(
@@ -38,13 +38,13 @@ class CarouselItem extends StatelessWidget {
                       spacing: 20,
                       children: [
                         SizedBox(
-                          width: 160,
+                          width: 156,
                           child: Text(
                             'Get your 30% daily discount now!',
                             maxLines: 2,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w700,
                             ),
                           ),

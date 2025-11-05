@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^2.2.1
   carousel_slider: ^5.1.1
   cached_network_image: ^3.4.1
+  glassy_navbar: ^0.0.9
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/icons/
+    - assets/icons/bottomNavigationBar/
+    - assets/icons/profile/
     - assets/images/
   #   - images/a_dot_ham.jpeg
 

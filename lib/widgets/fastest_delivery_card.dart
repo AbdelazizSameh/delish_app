@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delish_app/utils/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../models/fastest_delivery_model.dart';
@@ -82,7 +83,7 @@ class FastestDeliveryCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    SvgPicture.asset('assets/icons/wallet.svg', height: 14),
+                    SvgPicture.asset(AppAssets.wallet, height: 14),
                     const SizedBox(width: 4),
                     Text(
                       deliveryItem.price,
@@ -92,7 +93,7 @@ class FastestDeliveryCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    SvgPicture.asset('assets/icons/star.svg', height: 14),
+                    SvgPicture.asset(AppAssets.star, height: 14),
                     const SizedBox(width: 4),
                     Text(
                       deliveryItem.rating,

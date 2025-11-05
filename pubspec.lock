@@ -163,6 +163,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  glassy_navbar:
+    dependency: "direct main"
+    description:
+      name: glassy_navbar
+      sha256: "8d7c46e14ae5b7ee48e8a6e7813e8f8434be57040ee2c85cfbea484eef686003"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.9"
   http:
     dependency: transitive
     description:
