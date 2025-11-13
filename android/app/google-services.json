@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "455488066843",
+    "project_id": "delish-732d2",
+    "storage_bucket": "delish-732d2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455488066843:android:e9c19cb2fc8978e660efbe",
+        "android_client_info": {
+          "package_name": "com.example.delish"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455488066843-pite1len58dtv6n2nbkik6i57totkc5g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.delish",
+            "certificate_hash": "4b98c453fa1bf1e65bf794b030cc60b5aef364b9"
+          }
+        },
+        {
+          "client_id": "455488066843-dmlg8f5bp9s9m4lsepdt7otj1uqkna6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTlGn0Et2Us19gLo0ybt2Xq-ecKR2qMbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455488066843-1g9kp9kpmeja1qk2keeuge411jgot50h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "455488066843-qbv49t1g9fu7ia9grncfqnmblde0kh68.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.delish"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

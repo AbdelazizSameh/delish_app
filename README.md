@@ -1,4 +1,4 @@
-# delish_app
+# delish_new
 
 A new Flutter project.
 
