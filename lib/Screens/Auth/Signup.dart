@@ -22,6 +22,7 @@ class _LoginState extends State<Signup> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +99,7 @@ class _LoginState extends State<Signup> {
                                 email: emailController.text.trim(),
                                 password: passwordController.text.trim(),
                                 context: context,
+                                name: nameController.text,
                               );
 
                           // لو التسجيل نجح، ننتقل

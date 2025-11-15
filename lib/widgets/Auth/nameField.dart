@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Namefield extends StatefulWidget {
-  const Namefield({super.key});
+  const Namefield({super.key, required this.namelController});
+    final TextEditingController namelController ;
+
 
   @override
   State<Namefield> createState() => _TextformemailState();
 }
 
 class _TextformemailState extends State<Namefield> {
-  final TextEditingController namelController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: namelController,
+      controller:widget. namelController,
       decoration: InputDecoration(
         labelText: "Name ",
         hintText: "Enter your Name",
