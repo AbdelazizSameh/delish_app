@@ -62,7 +62,7 @@ class AddBalbanRestaurant extends StatelessWidget {
       final restaurantRef = await firestore.addRestaurant(
         name: "بلبن",
         imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHBHHQJtMf4EikCJppU7u94NNoGb-bIsQUEw&s",
-        isFast: false,
+        fastDelivery: false,
         rating: 9.0,
       );
 
@@ -168,7 +168,7 @@ class AddBalbanRestaurant extends StatelessWidget {
         description: '',
         price: item['price'],
         discount: 0.0,
-        isPopular: item['popular'],
+        popular: item['popular'],
         imageUrl: item['image'],
       );
     }

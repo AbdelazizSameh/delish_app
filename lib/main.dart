@@ -1,4 +1,5 @@
 import 'package:delish/Screens/AddforFirebase/addfirebase.dart';
+import 'package:delish/Screens/Auth/AuthWrapper.dart';
 import 'package:delish/Services/firebase/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class Delshi extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(home: AddBalbanRestaurant());
+        return MaterialApp(home: AuthWrapper());
       },
     );
   }
