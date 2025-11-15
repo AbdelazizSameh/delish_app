@@ -92,7 +92,6 @@ class _LoginState extends State<Signup> {
                     CustomButton(
                       text: "Sign up",
                       onPressed: () async {
-                        // <-- خليها async
                         if (formKey.currentState!.validate()) {
                           bool success =
                               await RegisterEmailAndPassword.registerEmailAndPassword(
