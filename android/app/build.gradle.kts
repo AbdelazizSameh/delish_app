@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")   // <<<<<< أضــيــف دا مهم جداً
 }
 
 android {
@@ -19,19 +19,16 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
-  defaultConfig {
-    applicationId = "com.example.delish" // نفس اللي في Firebase
-    minSdk = flutter.minSdkVersion
-    targetSdk = flutter.targetSdkVersion
-    versionCode = flutter.versionCode
-    versionName = flutter.versionName
-}
-
+    defaultConfig {
+        applicationId = "com.example.delish"   // لازم يكون مطابق ل Firebase
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
     }
@@ -39,4 +36,11 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
+
+    implementation("com.google.firebase:firebase-auth")        // Firebase Auth
+    implementation("com.google.android.gms:play-services-auth:20.7.0") // Google Sign-In
 }
