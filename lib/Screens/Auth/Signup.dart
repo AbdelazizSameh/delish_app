@@ -64,7 +64,7 @@ class _LoginState extends State<Signup> {
                     ),
                     SizedBox(height: 10.h),
 
-                    Namefield(nameController: nameController,),
+                    Namefield(namelController: nameController,),
                     SizedBox(height: 20.h),
                     // Email Field
                     Anytext(
