@@ -1,4 +1,3 @@
-import 'package:delish/Screens/AddforFirebase/addfirebase.dart';
 import 'package:delish/Screens/Auth/AuthWrapper.dart';
 import 'package:delish/Services/firebase/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
