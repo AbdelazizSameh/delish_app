@@ -43,7 +43,7 @@ class ProfileViewBody extends StatelessWidget {
           ),
         ),
 
-        const SliverToBoxAdapter(child: SizedBox(height: 20)),
+        const SliverToBoxAdapter(child: SizedBox(height: 100)),
       ],
     );
   }

@@ -21,7 +21,7 @@ class NavBarItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isSelected = index == currentIndex;
 
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -52,4 +52,3 @@ class NavBarItem extends StatelessWidget {
     );
   }
 }
-
