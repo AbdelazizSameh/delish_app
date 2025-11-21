@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/profile_items_list.dart';
+import '../../utils/profile_items_list.dart';
 import 'custom_logout_button.dart';
 import 'profile_header.dart';
 import 'profile_item.dart';

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delish_app/utils/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../models/fastest_delivery_model.dart';
+import '../../models/fastest_delivery_model.dart';
 
 class FastestDeliveryCard extends StatelessWidget {
   final FastestDeliveryModel deliveryItem;

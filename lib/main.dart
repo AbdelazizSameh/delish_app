@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'views/discovery_view.dart';
+import 'screens/discovery/discovery_view.dart';
 
 void main() {
   runApp(const DelishApp());

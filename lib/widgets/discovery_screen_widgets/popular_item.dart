@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/popular_item_model.dart';
+import '../../models/popular_item_model.dart';
 
 class PopularItem extends StatelessWidget {
   final FoodItemModel item;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../utils/app_assets.dart';
+import '../../utils/app_assets.dart';
 
 class CustomLogoutButton extends StatelessWidget {
   const CustomLogoutButton({super.key});

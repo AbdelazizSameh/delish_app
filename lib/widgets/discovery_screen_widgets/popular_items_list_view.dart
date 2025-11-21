@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/popular_item_model.dart';
+import '../../models/popular_item_model.dart';
 import 'popular_item.dart';
 
 class PopularItemsListView extends StatelessWidget {

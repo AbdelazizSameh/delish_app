@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/fastest_delivery_model.dart';
+import '../../models/fastest_delivery_model.dart';
 import 'fastest_delivery_card.dart';
 
 class FastestDeliveryListView extends StatelessWidget {

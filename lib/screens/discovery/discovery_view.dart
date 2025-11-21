@@ -1,7 +1,8 @@
-import 'package:delish_app/views/profile_view.dart';
+import 'package:delish_app/screens/profile/profile_view.dart';
 import 'package:flutter/material.dart';
-import '../widgets/custom_buttom_navigation_bar.dart';
-import '../widgets/discovery_view_body.dart';
+import '../../widgets/custom_buttom_navigation_bar.dart';
+import '../../widgets/discovery_screen_widgets/discovery_view_body.dart';
+import '../restaurant/restaurant_view.dart';
 
 class DiscoveryView extends StatefulWidget {
   const DiscoveryView({super.key});
@@ -15,7 +16,7 @@ class _DiscoveryViewState extends State<DiscoveryView> {
 
   final List<Widget> _pages = const [
     DiscoveryViewBody(),
-    Center(child: Text('Restaurants')),
+    RestaurantView(),
     Center(child: Text('Search')),
     Center(child: Text('Favorite')),
     ProfileView(),

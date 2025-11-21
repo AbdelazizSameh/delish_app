@@ -28,9 +28,7 @@ class DiscoveryViewBody extends StatelessWidget {
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: Padding(padding: EdgeInsetsGeometry.only(bottom: 100)),
-        ),
+        SliverToBoxAdapter(child: SizedBox(height: 100)),
       ],
     );
   }
