@@ -1,24 +1,26 @@
 // ignore_for_file: file_names
 
-import 'dart:developer';
+import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FirestoreService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  // ====================== Collections ======================
   CollectionReference get restaurantsCollection => db.collection('restaurants');
 
   // ====================== 1. إضافة مطعم ======================
   Future<DocumentReference> addRestaurant({
     required String name,
     required String imageUrl,
-    required bool isFast,
+    required bool fastDelivery,
     required double rating,
     int ratingCount = 0,
   }) async {
     return await db.collection('restaurants').add({
       'name': name,
       'image': imageUrl,
-      'isFast': isFast,
+      'fast_delivery': fastDelivery,
       'rating': rating,
       'ratingCount': ratingCount,
       'createdAt': FieldValue.serverTimestamp(),
@@ -42,20 +44,20 @@ class FirestoreService {
         });
   }
 
-  // ====================== 3. إضافة عنصر (void) ======================
-  Future<void> addItem({
+  // ====================== 3. إضافة عنصر ======================
+  Future<DocumentReference> addItem({
     required String restaurantId,
     required String categoryId,
     required String name,
     required String description,
     required double price,
     required double discount,
-    required bool isPopular,
+    required bool popular,
     String? imageUrl,
   }) async {
     final double priceAfterDiscount = price - (price * discount);
 
-    await db
+    return await db
         .collection('restaurants')
         .doc(restaurantId)
         .collection('categories')
@@ -66,8 +68,8 @@ class FirestoreService {
           'description': description,
           'price': price,
           'discount': discount,
-          'priceAfterDiscount': priceAfterDiscount,
-          'isPopular': isPopular,
+          'price_after_discount': priceAfterDiscount,
+          'popular': popular,
           'image': imageUrl ?? '',
           'createdAt': FieldValue.serverTimestamp(),
         });
@@ -86,8 +88,8 @@ class FirestoreService {
       'restaurantName': restaurantName,
       'items': items,
       'totalPrice': totalPrice,
-      'status': 'pending',
-      'orderTime': FieldValue.serverTimestamp(),
+      'status': 'preparing',
+      'createdAt': FieldValue.serverTimestamp(),
     });
   }
 
@@ -97,52 +99,63 @@ class FirestoreService {
     required String restaurantId,
     required String restaurantName,
   }) async {
-    final favRef = db.collection('users').doc(userId).collection('favorites');
-    final query = await favRef
-        .where('type', isEqualTo: 'restaurant')
-        .where('restaurantId', isEqualTo: restaurantId)
-        .get();
+    try {
+      final favRef = db
+          .collection('users')
+          .doc(userId)
+          .collection('favorites_restaurants');
 
-    if (query.docs.isNotEmpty) {
-      log('المطعم موجود بالفعل في المفضلة');
-      return;
+      final exists = await _existsInFavorites(favRef, restaurantId);
+      if (exists) {
+        developer.log('المطعم "$restaurantName" موجود بالفعل في المفضلة');
+        return;
+      }
+
+      await favRef.add({
+        'id': restaurantId,
+        'name': restaurantName,
+        'saved_at': FieldValue.serverTimestamp(),
+      });
+
+      developer.log('تم إضافة "$restaurantName" للمفضلة');
+    } catch (e) {
+      developer.log('خطأ في إضافة المطعم للمفضلة: $e');
+      rethrow;
     }
-
-    await favRef.add({
-      'type': 'restaurant',
-      'restaurantId': restaurantId,
-      'restaurantName': restaurantName,
-      'addedAt': FieldValue.serverTimestamp(),
-    });
   }
 
   // ====================== 6. إضافة عنصر للمفضلة ======================
   Future<void> addFavoriteItem({
     required String userId,
-    required String restaurantId,
-    required String categoryId,
     required String itemId,
     required String itemName,
+    required String restaurantId,
   }) async {
-    final favRef = db.collection('users').doc(userId).collection('favorites');
-    final query = await favRef
-        .where('type', isEqualTo: 'item')
-        .where('itemId', isEqualTo: itemId)
-        .get();
+    try {
+      final favRef = db
+          .collection('users')
+          .doc(userId)
+          .collection('favorites_items');
 
-    if (query.docs.isNotEmpty) {
-      log('العنصر موجود بالفعل في المفضلة');
-      return;
+      final exists = await _existsInFavorites(favRef, itemId);
+      if (exists) {
+        developer.log('الصنف "$itemName" موجود بالفعل في المفضلة');
+        return;
+      }
+
+      await favRef.add({
+        'id': itemId,
+        'name': itemName,
+        'restaurantId': restaurantId,
+        'saved_at': FieldValue.serverTimestamp(),
+      });
+      
+
+      developer.log('تم إضافة "$itemName" للمفضلة');
+    } catch (e) {
+      developer.log('خطأ في إضافة الصنف للمفضلة: $e');
+      rethrow;
     }
-
-    await favRef.add({
-      'type': 'item',
-      'restaurantId': restaurantId,
-      'categoryId': categoryId,
-      'itemId': itemId,
-      'itemName': itemName,
-      'addedAt': FieldValue.serverTimestamp(),
-    });
   }
 
   // ====================== 7. إزالة عنصر من المفضلة ======================
@@ -150,14 +163,23 @@ class FirestoreService {
     required String userId,
     required String itemId,
   }) async {
-    final favRef = db.collection('users').doc(userId).collection('favorites');
-    final query = await favRef
-        .where('type', isEqualTo: 'item')
-        .where('itemId', isEqualTo: itemId)
-        .get();
+    try {
+      final favRef = db
+          .collection('users')
+          .doc(userId)
+          .collection('favorites_items');
 
-    for (var doc in query.docs) {
-      await doc.reference.delete();
+      final docRef = await _getFavoriteDoc(favRef, itemId);
+      if (docRef == null) {
+        developer.log('الصنف غير موجود في المفضلة: $itemId');
+        return;
+      }
+
+      await docRef.delete();
+      developer.log('تم حذف الصنف من المفضلة: $itemId');
+    } catch (e) {
+      developer.log('خطأ في حذف الصنف: $e');
+      rethrow;
     }
   }
 
@@ -166,213 +188,181 @@ class FirestoreService {
     required String userId,
     required String restaurantId,
   }) async {
-    final favRef = db.collection('users').doc(userId).collection('favorites');
-    final query = await favRef
-        .where('type', isEqualTo: 'restaurant')
-        .where('restaurantId', isEqualTo: restaurantId)
-        .get();
+    try {
+      final favRef = db
+          .collection('users')
+          .doc(userId)
+          .collection('favorites_restaurants');
 
-    for (var doc in query.docs) {
-      await doc.reference.delete();
+      final docRef = await _getFavoriteDoc(favRef, restaurantId);
+      if (docRef == null) {
+        developer.log('المطعم غير موجود في المفضلة: $restaurantId');
+        return;
+      }
+
+      await docRef.delete();
+      developer.log('تم حذف المطعم من المفضلة: $restaurantId');
+    } catch (e) {
+      developer.log('خطأ في حذف المطعم: $e');
+      rethrow;
     }
   }
 
-  // ====================== 9. جلب كل المطاعم ======================
-  Stream<QuerySnapshot> getAllRestaurants() {
-    return db
-        .collection('restaurants')
-        .orderBy('rating', descending: true)
-        .snapshots();
-  }
-
-  // ====================== 10. جلب المطاعم السريعة فقط ======================
-  Stream<QuerySnapshot> getFastRestaurants() {
-    return db
-        .collection('restaurants')
-        .where('isFast', isEqualTo: true) // مُصحح
-        .orderBy('rating', descending: true)
-        .snapshots();
-  }
-
-  // ====================== 11. جلب كل العناصر ======================
-  Stream<QuerySnapshot> getAllItems() {
-    return db.collectionGroup('items').snapshots();
-  }
-
-  // ====================== 12. جلب العناصر المشهورة ======================
-  Stream<QuerySnapshot> getPopularItems() {
-    return db
-        .collectionGroup('items')
-        .where('isPopular', isEqualTo: true)
-        .orderBy('priceAfterDiscount')
-        .snapshots();
-  }
-
-  // ====================== 13. جلب التصنيفات مع عدد العناصر ======================
-  Stream<List<Map<String, dynamic>>> getCategoriesWithCount(String restaurantId) {
-    final categoriesRef = db
-        .collection('restaurants')
-        .doc(restaurantId)
-        .collection('categories');
-
-    return categoriesRef.snapshots().asyncMap((snapshot) async {
-      final List<Map<String, dynamic>> result = [];
-      for (var catDoc in snapshot.docs) {
-        final catData = catDoc.data();
-        final itemsSnapshot = await catDoc.reference.collection('items').get();
-        final itemCount = itemsSnapshot.docs.length;
-
-        result.add({
-          'categoryId': catDoc.id,
-          'name': catData['name'] ?? '',
-          'image': catData['image'] ?? '',
-          'itemCount': itemCount,
-        });
-      }
-      return result;
-    });
-  }
-
-  // ====================== 14. جلب تفاصيل عنصر ======================
-  Future<DocumentSnapshot?> getItemDetails({
+  // ====================== Toggle Favorite (مطاعم) ======================
+  Future<void> toggleFavoriteRestaurant({
+    required String userId,
     required String restaurantId,
-    required String categoryId,
+    required String restaurantName,
+  }) async {
+    final isFav = await isFavorite(
+      userId: userId,
+      type: 'restaurant',
+      id: restaurantId,
+    );
+    isFav
+        ? await removeFavoriteRestaurant(
+            userId: userId,
+            restaurantId: restaurantId,
+          )
+        : await addFavoriteRestaurant(
+            userId: userId,
+            restaurantId: restaurantId,
+            restaurantName: restaurantName,
+          );
+  }
+
+  // ====================== Toggle Favorite (أصناف) ======================
+  Future<void> toggleFavoriteItem({
+    required String userId,
     required String itemId,
+    required String itemName,
+    required String restaurantId,
+  }) async {
+    final isFav = await isFavorite(userId: userId, type: 'item', id: itemId);
+    isFav
+        ? await removeFavoriteItem(userId: userId, itemId: itemId)
+        : await addFavoriteItem(
+            userId: userId,
+            itemId: itemId,
+            itemName: itemName,
+            restaurantId: restaurantId,
+          );
+  }
+
+  // ====================== تقلب حالة الأوردر: preparing ↔ delivered ======================
+  Future<void> toggleOrderCompletion({
+    required String userId,
+    required String orderId,
   }) async {
     try {
-      return await db
-          .collection('restaurants')
-          .doc(restaurantId)
-          .collection('categories')
-          .doc(categoryId)
-          .collection('items')
-          .doc(itemId)
-          .get();
-    } catch (e) {
-      log('خطأ في جلب العنصر: $e');
-      return null;
-    }
-  }
-
-  // ====================== 15. جلب مفضلة العناصر ======================
-  Stream<QuerySnapshot> getFavoriteItems(String userId) {
-    return db
-        .collection('users')
-        .doc(userId)
-        .collection('favorites')
-        .where('type', isEqualTo: 'item')
-        .orderBy('addedAt', descending: true)
-        .snapshots();
-  }
-
-  // ====================== 16. جلب مفضلة المطاعم ======================
-  Stream<QuerySnapshot> getFavoriteRestaurants(String userId) {
-    return db
-        .collection('users')
-        .doc(userId)
-        .collection('favorites')
-        .where('type', isEqualTo: 'restaurant')
-        .orderBy('addedAt', descending: true)
-        .snapshots();
-  }
-
-  // ====================== 17. جلب طلبات اليوزر ======================
-  Stream<QuerySnapshot> getUserOrders(String userId) {
-    return db
-        .collection('users')
-        .doc(userId)
-        .collection('orders')
-        .orderBy('orderTime', descending: true)
-        .snapshots();
-  }
-
-  // ====================== 18. جلب تفاصيل طلب ======================
-  Future<DocumentSnapshot?> getOrderDetails(String userId, String orderId) async {
-    try {
-      return await db
+      final orderRef = db
           .collection('users')
           .doc(userId)
           .collection('orders')
-          .doc(orderId)
-          .get();
+          .doc(orderId);
+
+      final snapshot = await orderRef.get();
+      if (!snapshot.exists) {
+        developer.log('الأوردر غير موجود: $orderId');
+        return;
+      }
+
+      final currentStatus = snapshot.data()?['status'] as String?;
+
+      // Only toggle between preparing and delivered
+      if (currentStatus != 'preparing' && currentStatus != 'delivered') {
+        developer.log(
+          'لا يمكن تغيير حالة الأوردر إلا إذا كانت preparing أو delivered',
+        );
+        return;
+      }
+
+      final newStatus = (currentStatus == 'preparing')
+          ? 'delivered'
+          : 'preparing';
+
+      await orderRef.update({
+        'status': newStatus,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+
+      developer.log(
+        'تم تغيير حالة الأوردر $orderId من $currentStatus إلى: $newStatus',
+      );
     } catch (e) {
-      log('خطأ في جلب الطلب: $e');
-      return null;
+      developer.log('خطأ في تقلب حالة الأوردر: $e');
+      rethrow;
     }
   }
 
-  // ====================== 19. جلب التصنيفات (بدون العدد) ======================
-  Stream<QuerySnapshot> getCategories(String restaurantId) {
-    return db
-        .collection('restaurants')
-        .doc(restaurantId)
-        .collection('categories')
-        .orderBy('name')
-        .snapshots();
-  }
-
-  // ====================== 20. جلب مطعم بالـ ID ======================
-  Future<DocumentSnapshot?> getRestaurantById(String restaurantId) async {
+  // ====================== حذف أوردر معين إذا كان مكتمل فقط ======================
+  Future<void> deleteCompletedOrder({
+    required String userId,
+    required String orderId,
+  }) async {
     try {
-      return await db.collection('restaurants').doc(restaurantId).get();
+      final orderRef = db
+          .collection('users')
+          .doc(userId)
+          .collection('orders')
+          .doc(orderId);
+
+      final snapshot = await orderRef.get();
+      if (!snapshot.exists) {
+        developer.log('الأوردر غير موجود: $orderId');
+        return;
+      }
+
+      final status = snapshot.data()?['status'] as String?;
+      if (status != 'delivered') {
+        developer.log('الأوردر ليس مكتملًا، لا يمكن حذفه: $status');
+        return;
+      }
+
+      await orderRef.delete();
+      developer.log('تم حذف الأوردر المكتمل بنجاح: $orderId');
     } catch (e) {
-      log('خطأ في جلب المطعم: $e');
-      return null;
+      developer.log('خطأ في حذف الأوردر المكتمل: $e');
+      rethrow;
     }
   }
 
-  // ====================== 21. تحقق من المفضلة ======================
+  // ====================== تحقق من المفضلة  ======================
   Future<bool> isFavorite({
     required String userId,
     required String type,
     required String id,
   }) async {
-    final field = type == 'item' ? 'itemId' : 'restaurantId';
-    final query = await db
-        .collection('users')
-        .doc(userId)
-        .collection('favorites')
-        .where('type', isEqualTo: type)
-        .where(field, isEqualTo: id)
-        .get();
-    return query.docs.isNotEmpty;
-  }
-    // ====================== 21.جلب العناصر لمطعم معين ======================
-    Future<List<Map<String, dynamic>>> fetchRestaurantItemsOnly(String restaurantId) async {
     try {
-      final List<Map<String, dynamic>> allItems = [];
-
-      // 1. جلب كل التصنيفات
-      final categoriesSnapshot = await db
-          .collection('restaurants')
-          .doc(restaurantId)
-          .collection('categories')
+      final collection = type == 'restaurant'
+          ? 'favorites_restaurants'
+          : 'favorites_items';
+      final query = await db
+          .collection('users')
+          .doc(userId)
+          .collection(collection)
+          .where('id', isEqualTo: id)
+          .limit(1)
           .get();
-
-      // 2. لكل تصنيف → جلب العناصر (بدون إضافة categoryName)
-      for (var catDoc in categoriesSnapshot.docs) {
-        final itemsSnapshot = await db
-            .collection('restaurants')
-            .doc(restaurantId)
-            .collection('categories')
-            .doc(catDoc.id)
-            .collection('items')
-            .get();
-
-        for (var itemDoc in itemsSnapshot.docs) {
-          final itemData = itemDoc.data();
-          itemData['id'] = itemDoc.id;
-          allItems.add(itemData);
-        }
-      }
-
-      return allItems;
-
+      return query.docs.isNotEmpty;
     } catch (e) {
-      log("خطأ في جلب العناصر: $e");
-      rethrow;
+      developer.log('خطأ في التحقق من المفضلة: $e');
+      return false;
     }
   }
 
+  // ====================== Helper: تحقق من وجود في المفضلة ======================
+  Future<bool> _existsInFavorites(CollectionReference ref, String id) async {
+    final query = await ref.where('id', isEqualTo: id).limit(1).get();
+    return query.docs.isNotEmpty;
+  }
 
+  // ====================== Helper: جلب الـ Document للحذف ======================
+  Future<DocumentReference?> _getFavoriteDoc(
+    CollectionReference ref,
+    String id,
+  ) async {
+    final query = await ref.where('id', isEqualTo: id).limit(1).get();
+    return query.docs.isNotEmpty ? query.docs.first.reference : null;
+  }
 }
