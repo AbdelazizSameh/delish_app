@@ -1,3 +1,5 @@
+import 'package:delish_app/views/screen/favorite_screen.dart';
+import 'package:delish_app/views/screen/restaurants_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,6 +11,9 @@ class DelishApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: FlutterLogo());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FavoriteScreen(),
+    );
   }
 }
