@@ -4,8 +4,8 @@ import 'menu_item_card.dart';
 import 'restaurant_header.dart';
 import 'restaurant_info.dart';
 
-class RestaurantViewBody extends StatelessWidget {
-  const RestaurantViewBody({super.key});
+class RestaurantInfoViewBody extends StatelessWidget {
+  const RestaurantInfoViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {

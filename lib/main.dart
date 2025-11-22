@@ -1,6 +1,6 @@
+import 'package:delish_app/screens/home/home_view.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/discovery/discovery_view.dart';
 
 void main() {
   runApp(const DelishApp());
@@ -19,7 +19,7 @@ class DelishApp extends StatelessWidget {
         appBarTheme: AppBarThemeData(backgroundColor: Colors.white),
       ),
 
-      home: const DiscoveryView(),
+      home: const HomeView(),
     );
   }
 }
