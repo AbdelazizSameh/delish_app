@@ -1,5 +1,4 @@
-import 'package:delish_app/views/screen/favorite_screen.dart';
-import 'package:delish_app/views/screen/restaurants_screen.dart';
+import 'package:delish_app/screens/home/home_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +12,13 @@ class DelishApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FavoriteScreen(),
+      theme: ThemeData(
+        fontFamily: "Rubik-Regular",
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarThemeData(backgroundColor: Colors.white),
+      ),
+
+      home: const HomeView(),
     );
   }
 }
