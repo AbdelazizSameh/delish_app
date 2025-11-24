@@ -1,17 +1,17 @@
 import 'package:delish_app/widgets/favorite_screen_widget/food_card.dart';
 import 'package:delish_app/widgets/favorite_screen_widget/search_bar.dart';
 import 'package:delish_app/widgets/favorite_screen_widget/tab_button.dart';
-import 'package:delish_app/widgets/restaurant_screen_widget/restaurant_card_widget.dart';
+import 'package:delish_app/widgets/all_restaurant_screen_widget/restaurant_card_widget.dart';
 import 'package:flutter/material.dart';
 
-class FavoriteScreen extends StatefulWidget {
-  const FavoriteScreen({super.key});
+class FavoriteView extends StatefulWidget {
+  const FavoriteView({super.key});
 
   @override
-  State<FavoriteScreen> createState() => _FavoriteScreenState();
+  State<FavoriteView> createState() => _FavoriteViewState();
 }
 
-class _FavoriteScreenState extends State<FavoriteScreen> {
+class _FavoriteViewState extends State<FavoriteView> {
   int selectedTab = 0;
 
   @override
@@ -37,7 +37,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TabButton(
-                      
                       text: "Food Items",
                       isSelected: selectedTab == 0,
                       onTap: () => setState(() => selectedTab = 0),
