@@ -3,7 +3,7 @@ import 'carousel_slider_builder.dart';
 import 'custom_discovery_app_bar.dart';
 import 'fastest_delivery_list_view.dart';
 import 'popular_items_list_view.dart';
-import 'section_header.dart';
+import '../section_header.dart';
 
 class DiscoveryViewBody extends StatelessWidget {
   const DiscoveryViewBody({super.key});
@@ -20,7 +20,7 @@ class DiscoveryViewBody extends StatelessWidget {
             padding: EdgeInsetsGeometry.symmetric(horizontal: 19),
             child: Column(
               children: [
-                SectionHeader(title: "Fastest delivery 🔥"),
+                SectionHeader(title: "Fastest  🔥"),
                 FastestDeliveryListView(),
                 SectionHeader(title: "Popular items 👏"),
                 PopularItemsListView(),

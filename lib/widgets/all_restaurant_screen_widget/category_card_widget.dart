@@ -10,15 +10,12 @@ class CategoryCard extends StatelessWidget {
     return Container(
       width: 140,
       margin: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.only(left: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Colors.white,
         boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            spreadRadius: 1,
-          ),
+          BoxShadow(color: Colors.black12, blurRadius: 4, spreadRadius: 1),
         ],
       ),
       child: Column(
@@ -26,7 +23,9 @@ class CategoryCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16), topRight: Radius.circular(16)),
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
             child: Image.asset(
               item.imagePath,
               height: 80,

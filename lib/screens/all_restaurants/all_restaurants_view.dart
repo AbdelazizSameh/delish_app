@@ -1,7 +1,10 @@
 import 'package:delish_app/widgets/all_restaurant_screen_widget/restaurant_card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
+import '../../utils/app_assets.dart';
 import '../../widgets/all_restaurant_screen_widget/category_card_widget.dart';
+import '../../widgets/section_header.dart';
 
 class AllRestaurantsView extends StatelessWidget {
   const AllRestaurantsView({super.key});
@@ -11,23 +14,22 @@ class AllRestaurantsView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        forceMaterialTransparency: true,
         backgroundColor: Colors.white,
         elevation: 0,
         title: Row(
           children: [
-            IconButton(
-              icon: const Icon(Icons.home_rounded, color: Colors.orange),
-              onPressed: () {},
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: const Color(0xffF96234),
+              child: SvgPicture.asset(AppAssets.home, width: 19, height: 19),
             ),
-            const SizedBox(width: 10),
-            const Text(
+            SizedBox(width: 10),
+            Text(
               'Home, ',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
-            const Text(
-              'Jl. Soekarno Hatta 15A',
-              style: TextStyle(fontSize: 14),
-            ),
+            Text('Jl. Soekarno Hatta 15A', style: TextStyle(fontSize: 14)),
           ],
         ),
       ),
@@ -43,22 +45,7 @@ class AllRestaurantsView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Categories",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "See all",
-                    style: TextStyle(color: Colors.orange),
-                  ),
-                ),
-              ],
-            ),
+            const SectionHeader(title: "Categories"),
             const SizedBox(height: 8),
             SizedBox(
               height: 150,
@@ -68,40 +55,22 @@ class AllRestaurantsView extends StatelessWidget {
                 children: [
                   CategoryCard(
                     item: CategoryItemModel(
-                      imagePath: "assets/images/food.jpg",
-                      title: "برغر",
-                      subtitle: "25 مطعم",
+                      imagePath: "assets/images/food_buger.png",
+                      title: "Pizza",
+                      subtitle: "30 Places",
                     ),
                   ),
                   const SizedBox(width: 12),
-                  CategoryCard(
-                    item: CategoryItemModel(
-                      imagePath: "assets/images/food.jpg",
-                      title: "بيتزا",
-                      subtitle: "30 مطعم",
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  CategoryCard(
-                    item: CategoryItemModel(
-                      imagePath: "assets/images/food.jpg",
-                      title: "مشاوي",
-                      subtitle: "18 مطعم",
-                    ),
-                  ),
                 ],
               ),
             ),
 
             const SizedBox(height: 24),
 
-            const Text(
-              "All restaurants",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            const SectionHeader(title: "All restaurants", seeAll: false),
             const SizedBox(height: 12),
             RestaurantCard(
-              imagePath: "assets/images/food.jpg",
+              imagePath: "assets/images/food_buger.png",
               title: "Tasty Bowl",
               description: "Choose from a variety of bowl options...",
               price: 1.0,
@@ -109,19 +78,27 @@ class AllRestaurantsView extends StatelessWidget {
               onTap: () {},
             ),
             RestaurantCard(
-              imagePath: "assets/images/food.jpg",
-              title: "Green Salad",
-              description: "Fresh and healthy salad options...",
-              price: 2.5,
-              rating: 8.7,
+              imagePath: "assets/images/food_buger.png",
+              title: "Tasty Bowl",
+              description: "Choose from a variety of bowl options...",
+              price: 1.0,
+              rating: 9.2,
               onTap: () {},
             ),
             RestaurantCard(
-              imagePath: "assets/images/food.jpg",
-              title: "Italian Pasta",
-              description: "Authentic Italian pasta dishes...",
-              price: 3.0,
-              rating: 9.0,
+              imagePath: "assets/images/food_buger.png",
+              title: "Tasty Bowl",
+              description: "Choose from a variety of bowl options...",
+              price: 1.0,
+              rating: 9.2,
+              onTap: () {},
+            ),
+            RestaurantCard(
+              imagePath: "assets/images/food_buger.png",
+              title: "Tasty Bowl",
+              description: "Choose from a variety of bowl options...",
+              price: 1.0,
+              rating: 9.2,
               onTap: () {},
             ),
           ],
@@ -129,5 +106,4 @@ class AllRestaurantsView extends StatelessWidget {
       ),
     );
   }
-
 }
