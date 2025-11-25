@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:delish_app/screen/order_screen.dart';
 
 void main() {
@@ -32,5 +33,18 @@ class MyApp extends StatelessWidget {
       ),
       home: const OrderScreen(),
     );
+=======
+
+void main() {
+  runApp(const DelishApp());
+}
+
+class DelishApp extends StatelessWidget {
+  const DelishApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(debugShowCheckedModeBanner: false, home: FlutterLogo());
+>>>>>>> babfe1a57c035706062cfb1c3f4d3fd743c7bda8
   }
 }
