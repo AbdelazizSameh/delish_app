@@ -1,7 +1,7 @@
 import 'package:delish_app/screens/home/home_view.dart';
 import 'package:flutter/material.dart';
 
-Future<void> main() async {
+void main() {
   runApp(const DelishApp());
 }
 
