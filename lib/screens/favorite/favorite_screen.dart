@@ -1,5 +1,5 @@
 import 'package:delish_app/widgets/favorite_screen_widget/food_card.dart';
-import 'package:delish_app/widgets/favorite_screen_widget/search_bar.dart';
+import 'package:delish_app/widgets/shared/search_bar.dart';
 import 'package:delish_app/widgets/favorite_screen_widget/tab_button.dart';
 import 'package:delish_app/widgets/all_restaurant_screen_widget/restaurant_card_widget.dart';
 import 'package:flutter/material.dart';

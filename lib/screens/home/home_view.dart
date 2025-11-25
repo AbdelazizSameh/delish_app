@@ -1,9 +1,8 @@
 import 'package:delish_app/screens/favorite/favorite_screen.dart';
-import 'package:delish_app/screens/restaurant_info/restaurant_info_view.dart';
-import 'package:delish_app/widgets/restaurant_info_screen_widgets/restaurant_info.dart';
+import 'package:delish_app/screens/search/search_view.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets/custom_buttom_navigation_bar.dart';
+import '../../widgets/shared/custom_buttom_navigation_bar.dart';
 import '../all_restaurants/all_restaurants_view.dart';
 import '../discovery/discovery_view.dart';
 import '../profile/profile_view.dart';
@@ -21,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
   final List<Widget> _pages = const [
     DiscoveryView(),
     AllRestaurantsView(),
-    RestaurantInfoView(),
+    SearchView(),
     FavoriteView(),
     ProfileView(),
   ];

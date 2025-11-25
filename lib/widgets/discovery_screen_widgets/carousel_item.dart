@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'custom_button.dart';
+import '../shared/custom_button.dart';
 
 class CarouselItem extends StatelessWidget {
   const CarouselItem({super.key});

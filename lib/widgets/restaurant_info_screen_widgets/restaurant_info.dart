@@ -1,3 +1,4 @@
+import 'package:delish_app/widgets/shared/add_favourite_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'info_tile.dart';
@@ -18,12 +19,12 @@ class RestaurantInfo extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 "La Pasta House",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              Icon(Icons.favorite, color: Colors.red),
+              AddFavouriteWidget(onFavTap: () {}, isFavorite: false),
             ],
           ),
 
@@ -42,7 +43,7 @@ class RestaurantInfo extends StatelessWidget {
 
           const Text(
             "Popular items 🔥",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ],
       ),

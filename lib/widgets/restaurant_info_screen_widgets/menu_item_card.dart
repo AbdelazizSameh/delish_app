@@ -21,8 +21,8 @@ class MenuItemCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
               item.image,
-              height: 70,
-              width: 70,
+              height: 100,
+              width: 110,
               fit: BoxFit.cover,
             ),
           ),
