@@ -1,6 +1,8 @@
 import 'package:delish_app/screens/home/home_view.dart';
 import 'package:flutter/material.dart';
 
+import 'screens/order_screen/order_screen.dart';
+
 void main() {
   runApp(const DelishApp());
 }
@@ -18,7 +20,7 @@ class DelishApp extends StatelessWidget {
         appBarTheme: AppBarThemeData(backgroundColor: Colors.white),
       ),
 
-      home: const HomeView(),
+      home: const OrderScreen(),
     );
   }
 }

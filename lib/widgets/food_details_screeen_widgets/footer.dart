@@ -1,3 +1,4 @@
+import 'package:delish_app/screens/order_status/Order_status.dart';
 import 'package:flutter/material.dart';
 
 class Footer extends StatelessWidget {
@@ -46,7 +47,9 @@ class Footer extends StatelessWidget {
         ),
 
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen(orderItems: ),))
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFFF4400),
             shape: RoundedRectangleBorder(
