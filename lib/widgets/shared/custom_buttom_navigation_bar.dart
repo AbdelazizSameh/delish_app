@@ -1,6 +1,7 @@
 import 'dart:ui';
-import 'package:delish_app/utils/app_assets.dart';
+
 import 'package:flutter/material.dart';
+import '../../utils/app_assets.dart';
 import 'nav_bar_item.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {

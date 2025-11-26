@@ -1,7 +1,7 @@
-import 'package:delish_app/screens/food_details/food_details_view.dart';
 import 'package:flutter/material.dart';
 import '../../models/menu_item_model.dart';
 import '../../models/food_item.dart';
+import '../../screens/food_details/food_details_view.dart';
 import 'menu_item_card.dart';
 import '../shared/restaurant_and_food_header.dart';
 import 'restaurant_info.dart';

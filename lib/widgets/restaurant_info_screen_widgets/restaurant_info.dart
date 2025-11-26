@@ -1,6 +1,6 @@
-import 'package:delish_app/widgets/shared/add_favourite_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../shared/add_favourite_widget.dart';
 import 'info_tile.dart';
 
 class RestaurantInfo extends StatelessWidget {

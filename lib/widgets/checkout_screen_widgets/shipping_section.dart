@@ -1,4 +1,4 @@
-import 'package:delish_app/widgets/checkout_screen_widgets/header.dart';
+import 'package:delish/widgets/checkout_screen_widgets/header.dart';
 import 'package:flutter/material.dart';
 
 class ShippingSection extends StatelessWidget {

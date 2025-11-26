@@ -1,5 +1,5 @@
-import 'package:delish_app/screens/favorite/favorite_screen.dart';
-import 'package:delish_app/screens/search/search_view.dart';
+import 'package:delish/screens/favorite/favorite_screen.dart';
+import 'package:delish/screens/search/search_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/shared/custom_buttom_navigation_bar.dart';
