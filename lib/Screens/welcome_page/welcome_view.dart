@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:delish/screens/Auth/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeView extends StatefulWidget {
@@ -90,7 +91,6 @@ class _WelcomeViewState extends State<WelcomeView> {
                         Text(
                           'Welcome to',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 46,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -100,7 +100,6 @@ class _WelcomeViewState extends State<WelcomeView> {
                         Text(
                           'Delish',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 46,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFFFF4400),
@@ -118,7 +117,6 @@ class _WelcomeViewState extends State<WelcomeView> {
                     child: Text(
                       'Get your favorite meals delivered quickly\nright to your doorstep',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[800],
@@ -199,7 +197,6 @@ class _WelcomeViewState extends State<WelcomeView> {
                           Text(
                             'Already have an account? ',
                             style: TextStyle(
-                              fontFamily: 'Poppins',
                               color: Colors.grey[800],
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -207,8 +204,12 @@ class _WelcomeViewState extends State<WelcomeView> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // placeholder Sign in
-                              // Navigator.pushNamed(context, '/signin');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AuthWrapper(),
+                                ),
+                              );
                             },
                             child: const Text(
                               'Sign in',
@@ -232,22 +233,6 @@ class _WelcomeViewState extends State<WelcomeView> {
 
                   const SizedBox(height: 20),
                 ],
-              ),
-            ),
-          ),
-
-          // Temporary arrow to go to SearchPage
-          Positioned(
-            top: 40,
-            left: 20,
-            child: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/search');
-              },
-              icon: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Color.fromARGB(255, 11, 0, 0),
-                size: 28,
               ),
             ),
           ),

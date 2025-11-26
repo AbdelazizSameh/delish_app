@@ -1,8 +1,11 @@
 import 'package:delish/Screens/Auth/AuthWrapper.dart';
 import 'package:delish/Services/firebase/firebase_options.dart';
+import 'package:delish/utils/app_assets.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'screens/welcome_page/welcome_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,11 +26,11 @@ class DelishApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            fontFamily: "Rubik-Regular",
+            fontFamily: AppAssets.appFont,
             scaffoldBackgroundColor: Colors.white,
-            appBarTheme: AppBarThemeData(backgroundColor: Colors.white),
+            appBarTheme: const AppBarThemeData(backgroundColor: Colors.white),
           ),
-          home: AuthWrapper(),
+          home: const WelcomeView(),
         );
       },
     );

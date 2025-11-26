@@ -1,5 +1,7 @@
 abstract class AppAssets {
   
+  
+  static const String appFont = "Rubik-Regular";
   static const String _iconPath = "assets/icons";
 
   static const String home = "$_iconPath/home.svg";
