@@ -14,10 +14,11 @@ class RegisterEmailAndPassword {
   }) async {
     try {
       // 1. تسجيل في Firebase Auth
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password,
-      );
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: email.trim(),
+            password: password,
+          );
 
       final userId = credential.user!.uid;
 
