@@ -58,7 +58,7 @@ class OrderStatusScreen extends StatelessWidget {
             OrderCard(
               title: "Order Items",
               children: [
-                ...orderItems.map((item) => OrderItemRow(item: item)).toList(),
+                ...orderItems.map((item) => OrderItemRow(item: item)),
                 const Divider(height: 24, thickness: 1),
                 SummaryRow(
                   title: "Total:",

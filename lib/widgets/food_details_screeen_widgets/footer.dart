@@ -1,4 +1,3 @@
-import 'package:delish_app/screens/order_status/Order_status.dart';
 import 'package:flutter/material.dart';
 
 class Footer extends StatelessWidget {
