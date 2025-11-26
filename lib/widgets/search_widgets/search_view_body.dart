@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../shared/search_bar.dart';
+import '../Global/search_bar.dart';
 
 class SearchViewBody extends StatelessWidget {
   const SearchViewBody({super.key});

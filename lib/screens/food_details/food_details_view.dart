@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/food_item.dart';
 import '../../widgets/food_details_screeen_widgets/food_details_body.dart';
 import '../../widgets/food_details_screeen_widgets/footer.dart';
-import '../../widgets/shared/restaurant_and_food_header.dart';
+import '../../widgets/Global/restaurant_and_food_header.dart';
 
 class FoodDetailsView extends StatefulWidget {
   final FoodItem food;

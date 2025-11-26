@@ -3,7 +3,7 @@ import 'carousel_slider_builder.dart';
 import 'custom_app_bar.dart';
 import 'fastest_delivery_list_view.dart';
 import 'popular_items_list_view.dart';
-import '../shared/section_header.dart';
+import '../Global/section_header.dart';
 
 class DiscoveryViewBody extends StatelessWidget {
   const DiscoveryViewBody({super.key});

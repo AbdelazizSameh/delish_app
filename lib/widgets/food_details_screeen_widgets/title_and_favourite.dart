@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../shared/add_favourite_widget.dart';
+import '../Global/add_favourite_widget.dart';
 
 class TitleAndFavorite extends StatelessWidget {
   final bool isFavorite;
