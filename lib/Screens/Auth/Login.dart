@@ -3,6 +3,7 @@ import 'package:delish/Screens/Auth/ResetPassword.dart';
 import 'package:delish/Screens/Auth/Signup.dart';
 import 'package:delish/Services/firebase/SiginGoole.dart';
 import 'package:delish/Services/firebase/signinEmailAndPassword.dart';
+import 'package:delish/screens/home/home_view.dart';
 import 'package:delish/widgets/Auth/PasswordTextField.dart';
 import 'package:delish/widgets/Auth/SigninGoogle.dart';
 import 'package:delish/widgets/Auth/TextformEmail.dart';
@@ -114,7 +115,9 @@ class _LoginState extends State<Login> {
                           if (success) {
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => Home()),
+                              MaterialPageRoute(
+                                builder: (context) => HomeView(),
+                              ),
                             );
                           }
                         }
@@ -184,7 +187,7 @@ class _LoginState extends State<Login> {
               GoogleSignInButton(
                 onPressed: () async {
                   User? user = await GoogleSignInService.signInWithGoogle();
-                  if (user != null) {                    
+                  if (user != null) {
                   } else {
                     // فشل تسجيل الدخول
                     ScaffoldMessenger.of(context).showSnackBar(

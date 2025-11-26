@@ -2,12 +2,13 @@ import 'package:delish/utils/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+class CustomSliverAppBar extends StatelessWidget {
+  const CustomSliverAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      automaticallyImplyLeading: false,
       title: Row(
         children: [
           CircleAvatar(

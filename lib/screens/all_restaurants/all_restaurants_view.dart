@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/all_restaurant_screen_widget/category_card_widget.dart';
 import '../../widgets/all_restaurant_screen_widget/restaurant_card_widget.dart';
-import '../../widgets/discovery_screen_widgets/custom_app_bar.dart';
+import '../../widgets/Global/custom_sliver_app_bar.dart';
 import '../../widgets/Global/section_header.dart';
 import '../restaurant_info/restaurant_info_view.dart';
 
@@ -54,7 +54,7 @@ class AllRestaurantsView extends StatelessWidget {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          CustomAppBar(),
+          CustomSliverAppBar(),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverList(
