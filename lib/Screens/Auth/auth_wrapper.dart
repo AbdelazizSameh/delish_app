@@ -1,7 +1,8 @@
-import 'package:delish/Screens/Auth/Home.dart';
-import 'package:delish/Screens/Auth/Login.dart';
+import 'package:delish/screens/Auth/login.dart';
+import 'package:delish/screens/home/home_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 
@@ -11,20 +12,20 @@ class AuthWrapper extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         
-        // لسه بيتحقق من حالة اليوزر
+        // Still loading authentication state
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
-        // لو مفيش يوزر → يروح Login
+        // NOT logged in → Go to Login
         if (!snapshot.hasData) {
-          return Login(); 
+          return const Login();
         }
 
-        // لو فيه يوزر → يروح Home
-        return Home();
+        // Logged in → Go to Home
+        return const HomeView();
       },
     );
   }

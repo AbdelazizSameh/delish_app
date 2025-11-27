@@ -1,4 +1,6 @@
+import 'package:delish/cubits/fastest_restaurants/fastest_restaurants_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Global/custom_button.dart';
 
@@ -33,11 +35,11 @@ class CarouselItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const SizedBox(),
-                    const Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       spacing: 20,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 156,
                           child: Text(
                             'Get your 30% daily discount now!',
@@ -49,7 +51,7 @@ class CarouselItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        CustomButton(text: 'Order now'),
+                        CustomButton(text: 'Order now', onPressed: () {}),
                       ],
                     ),
                     Image.asset(

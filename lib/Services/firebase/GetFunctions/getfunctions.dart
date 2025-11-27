@@ -20,8 +20,7 @@ class FirestoreGetters {
   Stream<QuerySnapshot> getFastRestaurants() {
     return db
         .collection('restaurants')
-        .where('fast_delivery', isEqualTo: true)
-        .orderBy('rating', descending: true)
+        .where('isFast', isEqualTo: true)
         .snapshots();
   }
 
@@ -33,14 +32,15 @@ class FirestoreGetters {
   // ====================== 4. جلب العناصر المشهورة ======================
   Stream<QuerySnapshot> getPopularItems() {
     return db
-        .collectionGroup('items')
-        .where('popular', isEqualTo: true)
-        .orderBy('price_after_discount')
+        .collection('items')
+        .where('isPopular', isEqualTo: true)
         .snapshots();
   }
 
   // ====================== 5. جلب التصنيفات مع عدد العناصر ======================
-  Stream<List<Map<String, dynamic>>> getCategoriesWithCount(String restaurantId) {
+  Stream<List<Map<String, dynamic>>> getCategoriesWithCount(
+    String restaurantId,
+  ) {
     final categoriesRef = db
         .collection('restaurants')
         .doc(restaurantId)
@@ -50,7 +50,10 @@ class FirestoreGetters {
       final List<Map<String, dynamic>> result = [];
       for (var catDoc in snapshot.docs) {
         final catData = catDoc.data();
-        final itemsCount = await catDoc.reference.collection('items').count().get();
+        final itemsCount = await catDoc.reference
+            .collection('items')
+            .count()
+            .get();
         result.add({
           'categoryId': catDoc.id,
           'name': catData['name'] ?? '',
@@ -136,7 +139,10 @@ class FirestoreGetters {
   }
 
   // ====================== 12. جلب تفاصيل طلب (مرة واحدة) ======================
-  Future<DocumentSnapshot?> getOrderDetails(String userId, String orderId) async {
+  Future<DocumentSnapshot?> getOrderDetails(
+    String userId,
+    String orderId,
+  ) async {
     try {
       return await db
           .collection('users')
@@ -158,6 +164,30 @@ class FirestoreGetters {
         .collection('categories')
         .orderBy('name')
         .snapshots();
+  }
+
+  //=====================================================================
+  /// all items im restautrant
+  Future<List<Map<String, dynamic>>> getRestaurantItems(
+    String restaurantId,
+  ) async {
+    List<Map<String, dynamic>> allItems = [];
+
+    var categoriesSnapshot = await FirebaseFirestore.instance
+        .collection('restaurants')
+        .doc(restaurantId)
+        .collection('categories')
+        .get();
+
+    for (var categoryDoc in categoriesSnapshot.docs) {
+      var itemsSnapshot = await categoryDoc.reference.collection('items').get();
+
+      for (var itemDoc in itemsSnapshot.docs) {
+        allItems.add(itemDoc.data());
+      }
+    }
+
+    return allItems;
   }
 
   // ====================== 14. جلب مطعم بالـ ID (مرة واحدة) ======================
@@ -229,7 +259,9 @@ class FirestoreGetters {
   }
 
   // ====================== 18. جلب العناصر لمطعم معين (مرة واحدة) ======================
-  Future<List<Map<String, dynamic>>> fetchRestaurantItemsOnly(String restaurantId) async {
+  Future<List<Map<String, dynamic>>> fetchRestaurantItemsOnly(
+    String restaurantId,
+  ) async {
     try {
       final List<Map<String, dynamic>> allItems = [];
       final categoriesSnapshot = await db

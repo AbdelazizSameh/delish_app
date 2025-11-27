@@ -1,4 +1,5 @@
 import 'package:delish/Services/firebase/firebase_options.dart';
+import 'package:delish/screens/Auth/auth_wrapper.dart';
 import 'package:delish/utils/app_assets.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class DelishApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.white,
             appBarTheme: const AppBarThemeData(backgroundColor: Colors.white),
           ),
-          home: const WelcomeView(),
+          home: const AuthWrapper(),
         );
       },
     );

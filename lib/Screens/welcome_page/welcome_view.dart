@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:delish/screens/Auth/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 
+import '../Auth/login.dart';
+
 class WelcomeView extends StatefulWidget {
   const WelcomeView({super.key});
 
@@ -207,7 +209,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const AuthWrapper(),
+                                  builder: (_) => const Login(),
                                 ),
                               );
                             },

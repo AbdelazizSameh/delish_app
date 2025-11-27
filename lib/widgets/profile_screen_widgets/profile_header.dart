@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delish/utils/general_functions.dart';
 import 'package:flutter/material.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -8,16 +10,24 @@ class ProfileHeader extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 12),
-        const CircleAvatar(
-          radius: 50,
-          backgroundImage: NetworkImage(
-            'https://herway.net/wp-content/uploads/2022/03/serious-man-with-glasses-standing-and-looking-at-distance-1-1024x684.jpg',
+        Container(
+          width: 110,
+          height: 110,
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          child: ClipOval(
+            child: CachedNetworkImage(
+              imageUrl:
+                  'https://www.pngkey.com/png/detail/349-3499617_person-placeholder-person-placeholder.png',
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         const SizedBox(height: 12),
-        const Text(
-          "Kareem Alassy",
-          style: TextStyle(
+        Text(
+          userModel?.name ?? '',
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
             color: Colors.black,
@@ -25,7 +35,7 @@ class ProfileHeader extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          "kareem.alassy@gmail.com",
+          userModel?.email ?? '',
           style: TextStyle(color: Colors.grey[600], fontSize: 14),
         ),
       ],

@@ -1,5 +1,4 @@
-import 'package:delish/Screens/Auth/Home.dart';
-import 'package:delish/Screens/Auth/ResetPassword.dart';
+
 import 'package:delish/Screens/Auth/Signup.dart';
 import 'package:delish/Services/firebase/SiginGoole.dart';
 import 'package:delish/Services/firebase/signinEmailAndPassword.dart';
@@ -12,6 +11,8 @@ import 'package:delish/widgets/Global/CustomButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'reset_password.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
