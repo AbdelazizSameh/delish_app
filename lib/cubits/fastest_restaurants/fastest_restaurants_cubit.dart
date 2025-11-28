@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:delish/Services/firebase/GetFunctions/getfunctions.dart';
 import 'package:meta/meta.dart';
 
+import '../../models/fastest_delivery_model.dart';
+
 part 'fastest_restaurants_state.dart';
 
 class FastestRestaurantsCubit extends Cubit<FastestRestaurantsState> {
@@ -18,13 +20,15 @@ class FastestRestaurantsCubit extends Cubit<FastestRestaurantsState> {
     try {
       _subscription = FirestoreGetters().getFastRestaurants().listen(
         (snapshot) {
-          final data = snapshot.docs
-              .map((doc) => doc.data() as Map<String, dynamic>)
+          final restaurants = snapshot.docs
+              .map(
+                (doc) => FastestDeliveryModel.fromJson(
+                  doc.data() as Map<String, dynamic>,
+                ),
+              )
               .toList();
 
-          log("Loaded ${data.length} restaurants");
-
-          emit(FastestRestaurantsLoadedState());
+          emit(FastestRestaurantsLoadedState(restaurants: restaurants));
         },
         onError: (e) {
           log("Error: $e");

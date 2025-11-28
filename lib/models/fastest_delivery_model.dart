@@ -1,25 +1,22 @@
 class FastestDeliveryModel {
   final String imageUrl;
-  final String title;
+  final String name;
   final String description;
-  final String price;
-  final String rating;
+  final double rating;
 
   const FastestDeliveryModel({
     required this.imageUrl,
-    required this.title,
+    required this.name,
     required this.description,
-    required this.price,
     required this.rating,
   });
 
-  factory FastestDeliveryModel.fromJson(Map<String, dynamic> json) {
+  factory FastestDeliveryModel.fromJson(json) {
     return FastestDeliveryModel(
-      imageUrl: json['imageUrl'] ?? '',
-      title: json['title'] ?? '',
+      imageUrl: json['image'] ?? '',
+      name: json['name'] ?? '',
       description: json['description'] ?? '',
-      price: json['price'] ?? '',
-      rating: json['rating'] ?? '',
+      rating: json['rating'] ?? 0.0,
     );
   }
 }
