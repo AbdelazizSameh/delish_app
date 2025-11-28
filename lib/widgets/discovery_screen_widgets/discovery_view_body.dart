@@ -17,22 +17,6 @@ class DiscoveryViewBody extends StatelessWidget {
   const DiscoveryViewBody({super.key});
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<FastestRestaurantsCubit>(context).fetchFastRestaurants();
-    BlocProvider.of<PopularItemsCubit>(context).fetchPopularItems();
-    BlocProvider.of<GetCategoriesWithCountCubit>(
-      context,
-    ).fetchCategoriesWithCount('1if9Yn74ix3RkGOEfEFL');
-    BlocProvider.of<GetAllRestaurantsCubit>(context).fetchAllRestaurants();
-    BlocProvider.of<SpecificItemsForRestaurantsCubit>(
-      context,
-    ).fetchSpecificItems('1if9Yn74ix3RkGOEfEFL');
-    BlocProvider.of<GetFavouriteRestaurantsCubit>(
-      context,
-    ).fetchFavouriteRestaurants('t4nMAvE6NuOI0KvsqIc36yvSmGX2');
-    BlocProvider.of<GetFavouriteItemsCubit>(
-      context,
-    ).fetchFavouriteItems('t4nMAvE6NuOI0KvsqIc36yvSmGX2');
-
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: const [

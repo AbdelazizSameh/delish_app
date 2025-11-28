@@ -88,8 +88,9 @@ class FastestDeliveryCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  restaurantDescriptions[restaurantDescriptions.length %
-                      rand.nextInt(restaurantDescriptions.length)],
+                  restaurantDescriptions[rand.nextInt(
+                    restaurantDescriptions.length,
+                  )],
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(

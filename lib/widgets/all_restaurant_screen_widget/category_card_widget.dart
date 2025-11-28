@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delish/models/restaurants_categories_model.dart';
 import 'package:flutter/material.dart';
 
 class CategoryCard extends StatelessWidget {
-  final CategoryItemModel item;
+  final RestaurantsCategoriesModel item;
 
   const CategoryCard({super.key, required this.item});
 
@@ -10,7 +12,7 @@ class CategoryCard extends StatelessWidget {
     return Container(
       width: 140,
       margin: const EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.only(left: 12),
+
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Colors.white,
@@ -26,37 +28,54 @@ class CategoryCard extends StatelessWidget {
               topLeft: Radius.circular(16),
               topRight: Radius.circular(16),
             ),
-            child: Image.asset(
-              item.imagePath,
-              height: 80,
+            child: CachedNetworkImage(
+              imageUrl: item.image,
+              height: 90,
               width: double.infinity,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
+              placeholder: (context, url) => Container(
+                height: 130,
+                color: Colors.grey[200],
+                child: const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+              errorWidget: (context, url, error) => Container(
+                height: 130,
+                color: Colors.grey[200],
+                child: const Icon(
+                  Icons.broken_image,
+                  size: 40,
+                  color: Colors.grey,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            item.title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            item.subtitle,
-            style: const TextStyle(color: Colors.black54, fontSize: 12),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${item.itemCount} Places',
+                  style: const TextStyle(color: Colors.black54, fontSize: 12),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
-}
-
-class CategoryItemModel {
-  final String imagePath;
-  final String title;
-  final String subtitle;
-
-  CategoryItemModel({
-    required this.imagePath,
-    required this.title,
-    required this.subtitle,
-  });
 }

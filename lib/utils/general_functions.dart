@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delish/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../Services/firebase/GetFunctions/getfunctions.dart';
+
+UserModel? userModel;
 Future<Map<String, dynamic>?> getCurrentUserInfo() async {
   var user = FirebaseAuth.instance.currentUser;
 
@@ -16,4 +21,17 @@ Future<Map<String, dynamic>?> getCurrentUserInfo() async {
   return {'name': doc['name'], 'email': doc['email']};
 }
 
-UserModel? userModel;
+List<String> restaurantsIDs = [];
+
+Future<void> getAllRestaurantsID() async {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  try {
+    final snapshot = await db.collection('restaurants').get();
+    restaurantsIDs = snapshot.docs.map((doc) => doc.id).toList();
+
+    log(restaurantsIDs.toString());
+  } catch (e) {
+    log("Error fetching restaurant IDs: $e");
+  }
+}

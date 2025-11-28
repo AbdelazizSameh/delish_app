@@ -1,21 +1,20 @@
 part of 'get_categories_with_count_cubit.dart';
 
 @immutable
-sealed class GetCategoriesWithCountState {}
+abstract class GetCategoriesWithCountState {}
 
-final class GetCategoriesWithCountInitialState
-    extends GetCategoriesWithCountState {}
+class GetCategoriesWithCountInitialState extends GetCategoriesWithCountState {}
 
-final class GetCategoriesWithCountLoadingState
-    extends GetCategoriesWithCountState {}
+class GetCategoriesWithCountLoadingState extends GetCategoriesWithCountState {}
 
-final class GetCategoriesWithCountLoadedState
-    extends GetCategoriesWithCountState {
-  GetCategoriesWithCountLoadedState();
+class GetCategoriesWithCountLoadedState extends GetCategoriesWithCountState {
+  final List<RestaurantsCategoriesModel> categories;
+
+  GetCategoriesWithCountLoadedState({required this.categories});
 }
 
-final class GetCategoriesWithCountFailureState
-    extends GetCategoriesWithCountState {
+class GetCategoriesWithCountFailureState extends GetCategoriesWithCountState {
   final String message;
+
   GetCategoriesWithCountFailureState({required this.message});
 }

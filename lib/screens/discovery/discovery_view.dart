@@ -24,16 +24,15 @@ class DiscoveryView extends StatelessWidget {
         print('No user logged in');
       }
     });
+    getAllRestaurantsID();
     return Scaffold(
       body: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => FastestRestaurantsCubit()),
+          BlocProvider(
+            create: (context) =>
+                FastestRestaurantsCubit()..fetchFastRestaurants(),
+          ),
           BlocProvider(create: (context) => PopularItemsCubit()),
-          BlocProvider(create: (context) => GetCategoriesWithCountCubit()),
-          BlocProvider(create: (context) => GetAllRestaurantsCubit()),
-          BlocProvider(create: (context) => SpecificItemsForRestaurantsCubit()),
-          BlocProvider(create: (context) => GetFavouriteRestaurantsCubit()),
-          BlocProvider(create: (context) => GetFavouriteItemsCubit()),
         ],
         child: const DiscoveryViewBody(),
       ),
