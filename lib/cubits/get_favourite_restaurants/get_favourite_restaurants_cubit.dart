@@ -26,13 +26,13 @@ class GetFavouriteRestaurantsCubit extends Cubit<GetFavouriteRestaurantsState> {
                   .map((doc) => doc.data() as Map<String, dynamic>)
                   .toList();
 
-              log("Total favourite Restaurant : ${favs.length}");
+              log("Total favourite Restaurant : $favs");
 
               // for (var fav in favs) {
               //   log("Restaurant ID: ${fav['restaurant_id']}");
               // }
 
-              emit(GetFavouriteRestaurantsLoaded());
+              emit(GetFavouriteRestaurantsLoaded(restaurants: favs));
             },
             onError: (e) {
               log("Stream error: $e");

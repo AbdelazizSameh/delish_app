@@ -21,7 +21,7 @@ class _HomeViewState extends State<HomeView> {
     DiscoveryView(),
     AllRestaurantsView(),
     SearchView(),
-    FavoriteView(),
+    FavoriteViewProvider(),
     ProfileView(),
   ];
 

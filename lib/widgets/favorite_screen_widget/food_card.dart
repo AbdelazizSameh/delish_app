@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FoodCard extends StatelessWidget {
   final String imageUrl;
@@ -43,11 +44,21 @@ class FoodCard extends StatelessWidget {
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
-                child: Image.asset(
-                  imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
                   height: 160,
                   width: double.infinity,
                   fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    height: 160,
+                    color: Colors.grey.shade300,
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    height: 160,
+                    color: Colors.grey.shade300,
+                    child: const Icon(Icons.image_not_supported),
+                  ),
                 ),
               ),
               const Positioned(

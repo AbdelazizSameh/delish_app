@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'dart:developer' as developer;
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
@@ -79,15 +80,18 @@ class FirestoreService {
   Future<DocumentReference> addOrder({
     required String userId,
     required String restaurantId,
-    required String restaurantName,
-    required List<Map<String, dynamic>> items,
     required double totalPrice,
+    required int quantity,
+    required String name,
+    String? imageUrl,
   }) async {
     return await db.collection('users').doc(userId).collection('orders').add({
       'restaurantId': restaurantId,
-      'restaurantName': restaurantName,
-      'items': items,
+      'id': Random().nextInt(10000),
       'totalPrice': totalPrice,
+      'quantity': quantity,
+      'name': name,
+      'image': imageUrl,
       'status': 'preparing',
       'createdAt': FieldValue.serverTimestamp(),
     });
@@ -149,7 +153,6 @@ class FirestoreService {
         'restaurantId': restaurantId,
         'saved_at': FieldValue.serverTimestamp(),
       });
-      
 
       developer.log('تم إضافة "$itemName" للمفضلة');
     } catch (e) {
