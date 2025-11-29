@@ -1,14 +1,17 @@
-import 'package:delish/Services/firebase/GetFunctions/getfunctions.dart';
 import 'package:delish/models/OrderModel.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'summury_row.dart';
 
 class OrderSummaryList extends StatelessWidget {
-  final List<Order> items;
+  final String orderId;
+  final Order order;
 
-  const OrderSummaryList({super.key, required this.items});
+  const OrderSummaryList({
+    super.key,
+    required this.orderId,
+    required this.order,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,30 +27,10 @@ class OrderSummaryList extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 15),
-
-        ListView.builder(itemBuilder: (context, index) {
-          final item = items[index];
-          double total = item.totalPrice.toDouble() * item.quantity;
-          return SummaryRow(
-            title: '${item.quantity}x ${item.name}',
-            value: '€${total.toStringAsFixed(2).replaceAll('.', ',')}',
-          );
-        }),
+        Text("${order.quantity}x ${order.name}"),
 
         const SizedBox(height: 12),
-
-        StreamBuilder(
-          stream: FirestoreGetters().getTotalPricesofOrders(
-            FirebaseAuth.instance.currentUser!.uid,
-          ),
-          builder: (context, asyncSnapshot) {
-            return SummaryRow(
-              title: 'Total',
-              value: '€${asyncSnapshot.data}',
-              bold: true,
-            );
-          }
-        ),
+        SummaryRow(title: 'Total', value: '€${order.totalPrice}', bold: true),
       ],
     );
   }

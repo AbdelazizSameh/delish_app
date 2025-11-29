@@ -70,6 +70,7 @@ class _RestaurantInfoViewBodyState extends State<RestaurantInfoViewBody> {
                           MaterialPageRoute(
                             builder: (_) => FoodDetailsView(
                               food: FoodItem(
+                                itemId: item.id,
                                 name: item.name,
                                 image: item.image,
                                 price: item.price,

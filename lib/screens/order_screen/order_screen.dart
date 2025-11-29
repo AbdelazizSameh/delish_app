@@ -1,17 +1,19 @@
 import 'package:delish/models/OrderModel.dart';
+import 'package:delish/screens/checkout_screen/checkout_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Services/firebase/GetFunctions/getfunctions.dart';
 import '../../widgets/order_screen_widgets/checkout_footer.dart';
 import '../../widgets/order_screen_widgets/order_item_card.dart';
 import '../../widgets/order_screen_widgets/total_row.dart';
-import '../checkout_screen/checkout_screen.dart';
 
 class OrderScreen extends StatelessWidget {
-  const OrderScreen({super.key});
+  const OrderScreen({required this.orderId, super.key});
+  final String orderId;
 
   @override
   Widget build(BuildContext context) {
+    double? data;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -28,50 +30,58 @@ class OrderScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 12),
+
             const Text(
               "Order items",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+
             const SizedBox(height: 12),
-            StreamBuilder(
-              stream: FirestoreGetters().getUserOrders(
+
+            FutureBuilder(
+              future: FirestoreGetters().getOrderDetails(
                 FirebaseAuth.instance.currentUser!.uid,
+                orderId,
               ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No orders found.'));
-                } else {
-                  List<Order> orders = snapshot.data!
-                      .map((order) => Order.fromMap(order))
-                      .toList();
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: orders.length,
-                          itemBuilder: (context, index) {
-                            return OrderItemCard(order: orders[index]);
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                    ],
-                  );
+                } else if (!snapshot.hasData || snapshot.data == null) {
+                  return const Center(child: Text('No order found.'));
                 }
+
+                // snapshot.data = Map<String, dynamic>
+                Order order = Order.fromMap(snapshot.data!);
+
+                return Column(
+                  children: [
+                    OrderItemCard(order: order),
+                    const SizedBox(height: 12),
+                  ],
+                );
               },
             ),
+
             const SizedBox(height: 8),
             const Divider(),
-            StreamBuilder(
-              stream: FirestoreGetters().getTotalPricesofOrders(
+
+            StreamBuilder<double>(
+              stream: FirestoreGetters().getTotalPriceOfOrder(
                 FirebaseAuth.instance.currentUser!.uid,
+                orderId,
               ),
               builder: (context, asyncSnapshot) {
-                return TotalRow(price: asyncSnapshot.data ?? 0);
+                if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (asyncSnapshot.hasError) {
+                  return Center(child: Text('Error: ${asyncSnapshot.error}'));
+                }
+
+                final price = asyncSnapshot.data ?? 0.0;
+
+                return TotalRow(price: price);
               },
             ),
 
@@ -80,31 +90,22 @@ class OrderScreen extends StatelessWidget {
           ],
         ),
       ),
+
       bottomNavigationBar: StreamBuilder(
-        stream: FirestoreGetters().getTotalPricesofOrders(
+        stream: FirestoreGetters().getTotalPriceOfOrder(
           FirebaseAuth.instance.currentUser!.uid,
+          orderId,
         ),
         builder: (context, asyncSnapshot) {
           return CheckoutFooter(
             total: asyncSnapshot.data ?? 0,
             onCheckout: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (_) => 
-              //     StreamBuilder(
-              //       stream: FirestoreGetters()(
-              //         FirebaseAuth.instance.currentUser!.uid,
-
-              //       ),
-              //       builder: (context, asyncSnapshot) {
-              //         return CheckoutScreen(
-              //           orderItems: asyncSnapshot.data!.map((e) => Order.fromMap(e)).toList(),
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CheckoutScreen(orderId: orderId),
+                ),
+              );
             },
           );
         },

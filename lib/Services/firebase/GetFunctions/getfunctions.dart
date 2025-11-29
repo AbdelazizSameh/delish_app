@@ -127,17 +127,28 @@ class FirestoreGetters {
         });
   }
 
-  Stream<double> getTotalPricesofOrders(String userId) {
-    return db
-        .collection('users')
-        .doc(userId)
-        .collection('orders')
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map((snapshot) {
-          return snapshot.docs.map((doc) => doc.data()).toList().fold(0, (previous, order) => previous + order['totalPrice']!);
-        });
-  }
+  Stream<double> getTotalPriceOfOrder(String userId, String orderId) {
+  return db
+      .collection('users')
+      .doc(userId)
+      .collection('orders')
+      .doc(orderId)
+      .snapshots()
+      .map((doc) {
+        if (!doc.exists) return 0;
+        return (doc.data()?['totalPrice'] ?? 0).toDouble();
+      });
+}
+
+Stream<Map<String, dynamic>?> getOrderDetailsStream(String userId, String orderId) {
+  return db
+      .collection('users')
+      .doc(userId)
+      .collection('orders')
+      .doc(orderId)
+      .snapshots()
+      .map((doc) => doc.data());
+}
 
   // ====================== 10. جلب الأوردرات "جاري التحضير" ======================
   Stream<QuerySnapshot> getPreparingOrders(String userId) {
@@ -162,22 +173,25 @@ class FirestoreGetters {
   }
 
   // ====================== 12. جلب تفاصيل طلب (مرة واحدة) ======================
-  Future<DocumentSnapshot?> getOrderDetails(
-    String userId,
-    String orderId,
-  ) async {
-    try {
-      return await db
-          .collection('users')
-          .doc(userId)
-          .collection('orders')
-          .doc(orderId)
-          .get();
-    } catch (e) {
-      developer.log('خطأ في جلب الطلب: $e');
-      return null;
-    }
+  Future<Map<String, dynamic>?> getOrderDetails(
+  String userId,
+  String orderId,
+) async {
+  try {
+    final doc = await db
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .doc(orderId)
+        .get();
+
+    return doc.data(); // Map<String, dynamic>?
+  } catch (e) {
+    developer.log('خطأ في جلب الطلب: $e');
+    return null;
   }
+}
+
   // =============================جلب حالة الطلب===============================================
   Stream<String> getOrderStatus(String userId, String orderId) {
     return db
@@ -279,17 +293,17 @@ class FirestoreGetters {
   }
 
   // ====================== 17. جلب تفاصيل طلب (تحديث فوري) ======================
-  Stream<DocumentSnapshot> getOrderDetailsStream({
-    required String userId,
-    required String orderId,
-  }) {
-    return db
-        .collection('users')
-        .doc(userId)
-        .collection('orders')
-        .doc(orderId)
-        .snapshots();
-  }
+  // Stream<DocumentSnapshot> getOrderDetailsStream({
+  //   required String userId,
+  //   required String orderId,
+  // }) {
+  //   return db
+  //       .collection('users')
+  //       .doc(userId)
+  //       .collection('orders')
+  //       .doc(orderId)
+  //       .snapshots();
+  // }
 
   // ====================== 18. جلب العناصر لمطعم معين (مرة واحدة) ======================
   Future<List<Map<String, dynamic>>> fetchRestaurantItemsOnly(

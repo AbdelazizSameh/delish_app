@@ -7,6 +7,7 @@ class AddOn {
 
 class FoodItem {
   final String name;
+  final String itemId;
   final String image;
   final double price;
   final double? oldPrice;
@@ -16,6 +17,7 @@ class FoodItem {
   final String restaurantId;
 
   FoodItem({
+    required this.itemId,
     required this.name,
     required this.image,
     required this.price,

@@ -21,7 +21,6 @@ class OrderItemCard extends StatelessWidget {
           ),
         ],
       ),
-
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

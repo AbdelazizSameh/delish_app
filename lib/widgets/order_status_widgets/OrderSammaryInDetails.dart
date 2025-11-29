@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Ordersammaryindetails extends StatelessWidget {
   const Ordersammaryindetails({super.key, required this.orders});
-  final List<Order> orders;
+  final Order orders;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -17,21 +17,16 @@ class Ordersammaryindetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "OdersItmes",
+              "Oders  Itmes",
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const Divider(height: 20),
-            ListView.builder(
-              itemBuilder: (context, index) {
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("${orders[index].quantity}x ${orders[index].name}"),
-                    Text(" \$${orders[index].totalPrice}"),
-                  ],
-                );
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("${orders.quantity}x ${orders.name}"),
+                Text(" \$${orders.totalPrice}"),
+              ],
             ),
             const Divider(height: 20),
 
@@ -39,9 +34,7 @@ class Ordersammaryindetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Total Price: "),
-                Text(
-                  "\$${orders.fold(0.0, (previous, element) => previous + element.totalPrice)}",
-                ),
+                Text(" \$${orders.totalPrice}"),
               ],
             ),
           ],

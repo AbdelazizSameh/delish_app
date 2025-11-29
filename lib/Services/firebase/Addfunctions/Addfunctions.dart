@@ -77,63 +77,21 @@ class FirestoreService {
   }
 
   // ====================== 4. إضافة طلب ======================
-  // Future<DocumentReference> addOrder({
-  //   required String userId,
-  //   required String restaurantId,
-  //   required double totalPrice,
-  //   required int quantity,
-  //   required String name,
-  //   required String imageUrl,
-  // }) async {
-  //   return await db.collection('users').doc(userId).collection('orders').add({
-  //     'restaurantId': restaurantId,
-  //     'totalPrice': totalPrice,
-  //     'quantity': quantity,
-  //     'name': name,
-  //     'imageUrl': imageUrl,
-  //     'status': 'preparing',
-  //     'createdAt': FieldValue.serverTimestamp(),
-  //   });
-  // }
-  Future<String> addOrder({
-  required String userId,
-  required String restaurantId,
-  required double totalPrice,
-  required int quantity,
-  required String name,
-  required String imageUrl,
-}) async {
-  // 1. إضافة المستند
-  final ref = await db
-      .collection('users')
-      .doc(userId)
-      .collection('orders')
-      .add({
-    'restaurantId': restaurantId,
-    'totalPrice': totalPrice,
-    'quantity': quantity,
-    'name': name,
-    'imageUrl': imageUrl,
-    'status': 'preparing',
-    'createdAt': FieldValue.serverTimestamp(),
-  });
-  // 2. جلب المستند بعد الإضافة
-  final doc = await ref.get();
-  // 3. إرجاعه
-  return doc.id;
-}
-
   Future<DocumentReference> addOrder({
     required String userId,
     required String restaurantId,
     required double totalPrice,
     required int quantity,
     required String name,
+    required String idForSearch,
     String? imageUrl,
   }) async {
+
+    
     return await db.collection('users').doc(userId).collection('orders').add({
       'restaurantId': restaurantId,
       'id': Random().nextInt(10000),
+      'idForSearch': idForSearch,
       'totalPrice': totalPrice,
       'quantity': quantity,
       'name': name,
@@ -319,7 +277,7 @@ class FirestoreService {
       final currentStatus = snapshot.data()?['status'] as String?;
 
       // Only toggle between preparing and delivered
-      if (currentStatus != 'preparing' && currentStatus != 'delivered') {
+      if (currentStatus != 'preparing' && currentStatus != 'completed') {
         developer.log(
           'لا يمكن تغيير حالة الأوردر إلا إذا كانت preparing أو delivered',
         );
@@ -327,7 +285,7 @@ class FirestoreService {
       }
 
       final newStatus = (currentStatus == 'preparing')
-          ? 'delivered'
+          ? 'completed'
           : 'preparing';
 
       await orderRef.update({
@@ -363,7 +321,7 @@ class FirestoreService {
       }
 
       final status = snapshot.data()?['status'] as String?;
-      if (status != 'delivered') {
+      if (status != 'completed') {
         developer.log('الأوردر ليس مكتملًا، لا يمكن حذفه: $status');
         return;
       }

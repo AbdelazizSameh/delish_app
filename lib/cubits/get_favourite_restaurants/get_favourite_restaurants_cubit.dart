@@ -48,7 +48,7 @@ class GetFavouriteRestaurantsCubit extends Cubit<GetFavouriteRestaurantsState> {
       final restaurants = await Future.wait(
         favIds.map((id) async {
           final doc = await FirestoreGetters().getRestaurantById(id);
-          if (doc == null) return null; 
+          if (doc == null) return null;
           return RestaurantModel.fromMap(doc, id);
         }),
       );
@@ -59,6 +59,7 @@ class GetFavouriteRestaurantsCubit extends Cubit<GetFavouriteRestaurantsState> {
       emit(GetFavouriteRestaurantsLoaded(restaurants: res));
     } catch (e) {
       log("Error fetching favourite restaurants: $e");
+      if (isClosed) return;
       emit(GetFavouriteRestaurantsFailure(message: e.toString()));
     }
   }

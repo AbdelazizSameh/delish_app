@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
+import 'package:delish/Screens/order_screen/order_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    final foodItem = widget.food;
+    final food = widget.food;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -41,10 +42,10 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             RestaurantAndFoodHeader(image: foodItem.image),
+            RestaurantAndFoodHeader(image: food.image),
 
             FoodDetailsBody(
-              food: foodItem,
+              food: food,
               isFavorite: isFavorite,
               addonSelected: addonSelected,
               addPackage: addPackage,
@@ -72,6 +73,7 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
             quantity: quantity,
             totalPrice: (food.price * quantity).toDouble(),
             createdAt: Timestamp.now(),
+            idForSearch: food.itemId,
           ),
 
           onAdd: () => setState(() => quantity++),
@@ -82,21 +84,31 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
 
           onAddToOrder: () async {
             final order = Order(
+              id: food.itemId,
               restaurantId: food.restaurantId,
               name: food.name,
               image: food.image,
               quantity: quantity,
               totalPrice: (food.price * quantity).toDouble(),
               createdAt: Timestamp.now(),
+              idForSearch: food.itemId,
             );
 
             try {
-              FirestoreService().addOrder(
+              final DocumentReference doc = await FirestoreService().addOrder(
                 userId: FirebaseAuth.instance.currentUser?.uid ?? '',
                 restaurantId: order.restaurantId,
+                idForSearch: order.idForSearch,
                 totalPrice: order.totalPrice,
                 quantity: quantity,
                 name: order.name,
+                imageUrl: order.image,
+              );
+
+              log("Order added successfully with ID: ${doc.id}");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OrderScreen(orderId: doc.id)),
               );
             } catch (e) {
               log(e.toString());

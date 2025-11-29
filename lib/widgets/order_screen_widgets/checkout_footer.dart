@@ -54,7 +54,7 @@ class CheckoutFooter extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 30),
               child: Text(
-                total.toStringAsFixed(2),
+                total.toString(),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,

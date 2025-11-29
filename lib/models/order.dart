@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Order {
   String? id;
   final String restaurantId;
+  final String idForSearch;
   final String name;
   final String image;
   final int quantity;
@@ -11,6 +12,7 @@ class Order {
   final Timestamp createdAt;
 
   Order({
+    required this.idForSearch,
     this.id,
     required this.restaurantId,
     required this.name,
@@ -31,6 +33,7 @@ class Order {
       status: map['status'] ?? '',
       totalPrice: map['totalPrice'] ?? 0.0,
       createdAt: map['createdAt'] ?? Timestamp.now(),
+      idForSearch: map['idForSearch'],
     );
   }
 
