@@ -103,6 +103,17 @@ class FirestoreGetters {
         .snapshots();
   }
 
+  //============================================================================
+  Future<Map<String, dynamic>?> getRestaurantById(String restaurantId) async {
+  try {
+    final doc = await db.collection('restaurants').doc(restaurantId).get();
+    return doc.data();
+  } catch (e) {
+    developer.log('خطأ في جلب المطعم: $e');
+    return null;
+  }
+}
+
   // ====================== 9. جلب طلبات اليوزر ======================
   Stream<QuerySnapshot> getUserOrders(String userId) {
     return db
@@ -180,7 +191,7 @@ class FirestoreGetters {
       var itemsSnapshot = await categoryDoc.reference.collection('items').get();
 
       for (var itemDoc in itemsSnapshot.docs) {
-        allItems.add(itemDoc.data());
+        allItems.add({"id": itemDoc.id, ...itemDoc.data()});
       }
     }
 
@@ -188,14 +199,14 @@ class FirestoreGetters {
   }
 
   // ====================== 14. جلب مطعم بالـ ID (مرة واحدة) ======================
-  Future<DocumentSnapshot?> getRestaurantById(String restaurantId) async {
-    try {
-      return await db.collection('restaurants').doc(restaurantId).get();
-    } catch (e) {
-      developer.log('خطأ في جلب المطعم: $e');
-      return null;
-    }
-  }
+  // Future<DocumentSnapshot?> getRestaurantById(String restaurantId) async {
+  //   try {
+  //     return await db.collection('restaurants').doc(restaurantId).get();
+  //   } catch (e) {
+  //     developer.log('خطأ في جلب المطعم: $e');
+  //     return null;
+  //   }
+  // }
 
   // ====================== 15. تحقق من المفضلة (مرة واحدة) ======================
   Future<bool> isFavorite({

@@ -8,7 +8,8 @@ final class SpecificItemsInitial extends SpecificItemsForRestaurantsState {}
 final class SpecificItemsLoading extends SpecificItemsForRestaurantsState {}
 
 final class SpecificItemsLoaded extends SpecificItemsForRestaurantsState {
-  SpecificItemsLoaded();
+  final List<ItemModel> items;
+  SpecificItemsLoaded(this.items);
 }
 
 final class SpecificItemsFailure extends SpecificItemsForRestaurantsState {

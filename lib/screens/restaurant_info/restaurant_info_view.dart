@@ -11,9 +11,7 @@ class RestaurantInfoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) =>
-            SpecificItemsForRestaurantsCubit()
-              ..fetchSpecificItems(model.restaurnatId),
+        create: (context) => SpecificItemsForRestaurantsCubit(),
         child: RestaurantInfoViewBody(restaurantModel: model),
       ),
     );

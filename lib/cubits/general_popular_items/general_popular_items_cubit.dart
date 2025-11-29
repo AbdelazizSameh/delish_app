@@ -22,8 +22,8 @@ class PopularItemsCubit extends Cubit<GenaralPopularItemsState> {
               .map((doc) => doc.data() as Map<String, dynamic>)
               .toList();
 
-          log("Loaded ${items.length} popular items");
-
+          log("Loaded $items popular items");
+          if (isClosed) return;
           emit(GenaralPopularItemsLoadedState());
         },
         onError: (e) {

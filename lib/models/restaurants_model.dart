@@ -19,9 +19,9 @@ class RestaurantModel {
     required this.ratingCount,
   });
 
-  factory RestaurantModel.fromMap(Map<String, dynamic> map,String docId) {
+  factory RestaurantModel.fromMap(Map<String, dynamic> map, String docId) {
     return RestaurantModel(
-      createdAt: map['createdAt'],
+      createdAt: map['createdAt'] ?? Timestamp.now(),
       image: map['image'] ?? '',
       isFast: map['isFast'] ?? false,
       name: map['name'] ?? '',

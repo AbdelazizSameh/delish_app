@@ -21,14 +21,8 @@ class DiscoveryView extends StatelessWidget {
     });
     getAllRestaurantsID();
     return Scaffold(
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                FastestRestaurantsCubit()..fetchFastRestaurants(),
-          ),
-          BlocProvider(create: (context) => PopularItemsCubit()),
-        ],
+      body: BlocProvider(
+        create: (context) => FastestRestaurantsCubit()..fetchFastRestaurants(),
         child: const DiscoveryViewBody(),
       ),
     );
