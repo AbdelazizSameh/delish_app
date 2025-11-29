@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'dart:developer' as developer;
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
@@ -122,6 +123,25 @@ class FirestoreService {
   return doc.id;
 }
 
+  Future<DocumentReference> addOrder({
+    required String userId,
+    required String restaurantId,
+    required double totalPrice,
+    required int quantity,
+    required String name,
+    String? imageUrl,
+  }) async {
+    return await db.collection('users').doc(userId).collection('orders').add({
+      'restaurantId': restaurantId,
+      'id': Random().nextInt(10000),
+      'totalPrice': totalPrice,
+      'quantity': quantity,
+      'name': name,
+      'image': imageUrl,
+      'status': 'preparing',
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
 
   // ====================== 5. إضافة مطعم للمفضلة ======================
   Future<void> addFavoriteRestaurant({

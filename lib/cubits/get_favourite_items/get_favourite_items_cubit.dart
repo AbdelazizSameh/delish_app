@@ -31,7 +31,7 @@ class GetFavouriteItemsCubit extends Cubit<GetFavouriteItemsState> {
               //   log("Item ID: ${item['item_id']}");
               // }
 
-              emit(GetFavouriteItemsLoaded());
+              emit(GetFavouriteItemsLoaded(items: items));
             },
             onError: (e) {
               log("Stream error: $e");

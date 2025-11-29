@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:delish/models/restaurants_model.dart';
 import 'package:meta/meta.dart';
 
 import '../../Services/firebase/GetFunctions/getfunctions.dart';
@@ -22,17 +23,14 @@ class GetFavouriteRestaurantsCubit extends Cubit<GetFavouriteRestaurantsState> {
           .getFavoriteRestaurants(userId)
           .listen(
             (snapshot) {
-              List<Map<String, dynamic>> favs = snapshot.docs
-                  .map((doc) => doc.data() as Map<String, dynamic>)
+              List<String> favIds = snapshot.docs
+                  .map(
+                    (doc) =>
+                        (doc.data() as Map<String, dynamic>)['id'] as String,
+                  )
                   .toList();
 
-              log("Total favourite Restaurant : ${favs.length}");
-
-              // for (var fav in favs) {
-              //   log("Restaurant ID: ${fav['restaurant_id']}");
-              // }
-
-              emit(GetFavouriteRestaurantsLoaded());
+              _fetchRestaurantsByIds(favIds);
             },
             onError: (e) {
               log("Stream error: $e");
@@ -45,10 +43,23 @@ class GetFavouriteRestaurantsCubit extends Cubit<GetFavouriteRestaurantsState> {
     }
   }
 
-  @override
-  Future<void> close() {
-    log("Cancelling favourite restaurants subscription");
-    _subscription?.cancel();
-    return super.close();
+  Future<void> _fetchRestaurantsByIds(List<String> favIds) async {
+    try {
+      final restaurants = await Future.wait(
+        favIds.map((id) async {
+          final doc = await FirestoreGetters().getRestaurantById(id);
+          if (doc == null) return null; 
+          return RestaurantModel.fromMap(doc, id);
+        }),
+      );
+
+      final res = restaurants.whereType<RestaurantModel>().toList();
+
+      log(res.toString());
+      emit(GetFavouriteRestaurantsLoaded(restaurants: res));
+    } catch (e) {
+      log("Error fetching favourite restaurants: $e");
+      emit(GetFavouriteRestaurantsFailure(message: e.toString()));
+    }
   }
 }

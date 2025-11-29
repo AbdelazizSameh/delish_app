@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import '../../models/order.dart';
 
 class Footer extends StatelessWidget {
-  final int quantity;
+  final Order order;
   final VoidCallback onAdd;
   final VoidCallback onRemove;
+  final VoidCallback onAddToOrder;
 
   const Footer({
     super.key,
-    required this.quantity,
+    required this.order,
     required this.onAdd,
     required this.onRemove,
+    required this.onAddToOrder,
   });
 
   @override
@@ -30,13 +33,15 @@ class Footer extends StatelessWidget {
                 onPressed: onRemove,
                 icon: const Icon(Icons.remove_circle, color: Color(0xFFFF4400)),
               ),
+
               Text(
-                '$quantity',
+                '${order.quantity}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
               IconButton(
                 onPressed: onAdd,
                 icon: const Icon(Icons.add_circle, color: Color(0xFFFF4400)),
@@ -46,9 +51,7 @@ class Footer extends StatelessWidget {
         ),
 
         ElevatedButton(
-          onPressed: () {
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen(orderItems: ),))
-          },
+          onPressed: onAddToOrder,
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFFF4400),
             shape: RoundedRectangleBorder(

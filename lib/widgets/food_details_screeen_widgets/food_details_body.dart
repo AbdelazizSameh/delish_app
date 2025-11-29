@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../models/food_item.dart';
 import 'add_on_section.dart';
 import 'description.dart';
@@ -35,6 +34,7 @@ class FoodDetailsBody extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 20),
+
           TitleAndFavorite(
             isFavorite: isFavorite,
             onFavTap: onToggleFavorite,

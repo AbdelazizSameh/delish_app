@@ -10,7 +10,8 @@ final class GetFavouriteRestaurantsLoading
     extends GetFavouriteRestaurantsState {}
 
 final class GetFavouriteRestaurantsLoaded extends GetFavouriteRestaurantsState {
-  GetFavouriteRestaurantsLoaded();
+  final List<RestaurantModel> restaurants;
+  GetFavouriteRestaurantsLoaded({required this.restaurants});
 }
 
 final class GetFavouriteRestaurantsFailure

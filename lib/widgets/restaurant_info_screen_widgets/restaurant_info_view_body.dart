@@ -76,6 +76,9 @@ class _RestaurantInfoViewBodyState extends State<RestaurantInfoViewBody> {
                                 oldPrice: item.price,
                                 description: item.description,
                                 addons: const [],
+                                restaurantId: widget
+                                    .restaurantModel
+                                    .restaurnatId,
                               ),
                             ),
                           ),

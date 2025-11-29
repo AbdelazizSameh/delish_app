@@ -32,7 +32,7 @@ class GetCategoriesWithCountCubit extends Cubit<GetCategoriesWithCountState> {
       );
 
       final allCategories = results.expand((list) => list).toList();
-      if (isClosed) return;
+
       emit(GetCategoriesWithCountLoadedState(categories: allCategories));
       log("All categories loaded successfully.");
     } catch (e) {

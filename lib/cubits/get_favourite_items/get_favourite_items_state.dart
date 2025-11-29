@@ -8,7 +8,8 @@ final class GetFavouriteItemsInitial extends GetFavouriteItemsState {}
 final class GetFavouriteItemsLoading extends GetFavouriteItemsState {}
 
 final class GetFavouriteItemsLoaded extends GetFavouriteItemsState {
-  GetFavouriteItemsLoaded();
+  final List<Map<String, dynamic>> items;
+  GetFavouriteItemsLoaded({required this.items});
 }
 
 final class GetFavouriteItemsFailure extends GetFavouriteItemsState {
