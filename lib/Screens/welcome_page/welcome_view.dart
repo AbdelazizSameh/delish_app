@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:delish/screens/Auth/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 
 import '../Auth/login.dart';

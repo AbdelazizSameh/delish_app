@@ -3,13 +3,13 @@ import 'app_round_icon.dart';
 import 'header_image.dart';
 
 class RestaurantAndFoodHeader extends StatelessWidget {
-  const RestaurantAndFoodHeader({super.key});
-
+  const RestaurantAndFoodHeader({super.key, required this.image});
+  final String image;
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const HeaderImage(),
+        HeaderImage(image: image,),
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

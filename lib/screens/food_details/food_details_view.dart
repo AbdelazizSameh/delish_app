@@ -35,7 +35,7 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const RestaurantAndFoodHeader(),
+            const RestaurantAndFoodHeader(image: ''),
 
             FoodDetailsBody(
               food: food,

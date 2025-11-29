@@ -8,7 +8,8 @@ final class GetAllRestaurantsInitialState extends GetAllRestaurantsState {}
 final class GetAllRestaurantsLoadingState extends GetAllRestaurantsState {}
 
 final class GetAllRestaurantsLoadedState extends GetAllRestaurantsState {
-  GetAllRestaurantsLoadedState();
+  final List<RestaurantModel> restaurants;
+  GetAllRestaurantsLoadedState(this.restaurants);
 }
 
 final class GetAllRestaurantsFailureState extends GetAllRestaurantsState {

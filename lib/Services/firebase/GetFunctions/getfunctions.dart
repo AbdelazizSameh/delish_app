@@ -10,10 +10,7 @@ class FirestoreGetters {
 
   // ====================== 1. جلب كل المطاعم ======================
   Stream<QuerySnapshot> getAllRestaurants() {
-    return db
-        .collection('restaurants')
-        .orderBy('rating', descending: true)
-        .snapshots();
+    return db.collection('restaurants').snapshots();
   }
 
   // ====================== 2. جلب المطاعم السريعة ======================

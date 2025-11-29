@@ -1,12 +1,10 @@
 import 'package:delish/Services/firebase/firebase_options.dart';
 import 'package:delish/screens/Auth/auth_wrapper.dart';
 import 'package:delish/utils/app_assets.dart';
-import 'package:delish/utils/general_functions.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'screens/welcome_page/welcome_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

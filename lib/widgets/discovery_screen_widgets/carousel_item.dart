@@ -1,6 +1,4 @@
-import 'package:delish/cubits/fastest_restaurants/fastest_restaurants_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Global/custom_button.dart';
 

@@ -1,3 +1,4 @@
+import 'package:delish/cubits/get_all_restaurants/get_all_restaurants_cubit.dart';
 import 'package:delish/cubits/get_categories_with_count/get_categories_with_count_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,38 +13,23 @@ import '../restaurant_info/restaurant_info_view.dart';
 class AllRestaurantsView extends StatelessWidget {
   const AllRestaurantsView({super.key});
 
-  static final List<Map<String, dynamic>> restaurants = [
-    {
-      "image": "assets/images/food_buger.png",
-      "title": "Tasty Bowl",
-      "desc": "Choose from a variety of bowl options...",
-      "price": 1.0,
-      "rating": 9.2,
-    },
-    {
-      "image": "assets/images/food_buger.png",
-      "title": "Burger House",
-      "desc": "Fresh burgers with amazing flavors...",
-      "price": 1.0,
-      "rating": 8.8,
-    },
-    {
-      "image": "assets/images/food_buger.png",
-      "title": "Pizza Mania",
-      "desc": "Hot fresh pizzas delivered fast...",
-      "price": 1.0,
-      "rating": 9.5,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      body: BlocProvider(
-        create: (context) =>
-            GetCategoriesWithCountCubit()..fetchCategoriesWithCount(),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                GetCategoriesWithCountCubit()..fetchCategoriesWithCount(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                GetAllRestaurantsCubit()..fetchAllRestaurants(),
+          ),
+        ],
+
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
@@ -104,27 +90,46 @@ class AllRestaurantsView extends StatelessWidget {
             ),
 
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  final r = restaurants[index];
-                  return RestaurantCard(
-                    imagePath: r["image"],
-                    title: r["title"],
-                    description: r["desc"],
-                    price: r["price"],
-                    rating: r["rating"],
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const RestaurantInfoView(),
-                        ),
-                      );
+              padding: const EdgeInsets.only(bottom: 90, left: 16, right: 16),
+              sliver:
+                  BlocBuilder<GetAllRestaurantsCubit, GetAllRestaurantsState>(
+                    builder: (context, state) {
+                      if (state is GetAllRestaurantsLoadedState) {
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            return RestaurantCard(
+                              restaurantModel: state.restaurants[index],
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => RestaurantInfoView(
+                                      model: state.restaurants[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }, childCount: state.restaurants.length),
+                        );
+                      } else if (state is GetAllRestaurantsLoadingState) {
+                        return SliverToBoxAdapter(
+                          child: const Center(
+                            child: CupertinoActivityIndicator(),
+                          ),
+                        );
+                      } else {
+                        return SliverToBoxAdapter(
+                          child: Center(
+                            child: Text("Failed to load restauraunts"),
+                          ),
+                        );
+                      }
                     },
-                  );
-                }, childCount: restaurants.length),
-              ),
+                  ),
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:delish/models/restaurants_model.dart';
 import 'package:flutter/material.dart';
 import '../../models/menu_item_model.dart';
 import '../../models/food_item.dart';
@@ -7,14 +8,16 @@ import '../Global/restaurant_and_food_header.dart';
 import 'restaurant_info.dart';
 
 class RestaurantInfoViewBody extends StatelessWidget {
-  const RestaurantInfoViewBody({super.key});
-
+  const RestaurantInfoViewBody({super.key, required this.restaurantModel});
+  final RestaurantModel restaurantModel;
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const SliverToBoxAdapter(child: RestaurantAndFoodHeader()),
-        const SliverToBoxAdapter(child: RestaurantInfo()),
+        SliverToBoxAdapter(
+          child: RestaurantAndFoodHeader(image: restaurantModel.image),
+        ),
+        SliverToBoxAdapter(child: RestaurantInfo(model: restaurantModel)),
 
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

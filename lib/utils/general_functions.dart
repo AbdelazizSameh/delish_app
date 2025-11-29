@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delish/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../Services/firebase/GetFunctions/getfunctions.dart';
 
 UserModel? userModel;
 Future<Map<String, dynamic>?> getCurrentUserInfo() async {

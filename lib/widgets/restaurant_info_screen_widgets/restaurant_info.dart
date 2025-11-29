@@ -1,11 +1,12 @@
+import 'package:delish/models/restaurants_model.dart';
 import 'package:flutter/material.dart';
 
 import '../Global/add_favourite_widget.dart';
 import 'info_tile.dart';
 
 class RestaurantInfo extends StatelessWidget {
-  const RestaurantInfo({super.key});
-
+  const RestaurantInfo({super.key, required this.model});
+  final RestaurantModel model;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,9 +21,12 @@ class RestaurantInfo extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "La Pasta House",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              Text(
+                model.name,
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               AddFavouriteWidget(onFavTap: () {}, isFavorite: false),
             ],
@@ -37,7 +41,7 @@ class RestaurantInfo extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          const InfoTile(icon: Icons.star, text: "Excellent 9.5"),
+          InfoTile(icon: Icons.star, text: "Excellent ${model.rating}"),
 
           const SizedBox(height: 70),
 

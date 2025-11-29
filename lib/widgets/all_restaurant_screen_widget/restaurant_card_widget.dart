@@ -1,28 +1,33 @@
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../models/restaurants_model.dart';
 import '../../utils/app_assets.dart';
 
 class RestaurantCard extends StatelessWidget {
-  final String imagePath;
-  final String title;
-  final String description;
-  final double price;
-  final double rating;
+  final RestaurantModel restaurantModel;
   final VoidCallback? onTap;
 
-  const RestaurantCard({
-    super.key,
-    required this.imagePath,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.rating,
-    this.onTap,
-  });
+  const RestaurantCard({super.key, this.onTap, required this.restaurantModel});
 
   @override
   Widget build(BuildContext context) {
+    final Random rand = Random();
+    final List<String> restaurantDescriptions = [
+      "A highly trusted restaurant known for excellent service, consistent quality, and a welcoming atmosphere for all customers.",
+      "A top-rated dining spot recognized for its professionalism, hygiene, and commitment to delivering an exceptional experience.",
+      "A well-established restaurant with a strong reputation in the community and a focus on customer satisfaction.",
+      "A popular destination admired for its friendly staff, organized service, and smooth dining experience.",
+      "A customer-focused restaurant that values hospitality, efficiency, and maintaining high service standards.",
+      "A modern and reliable restaurant offering quality service and a comfortable environment for all guests.",
+      "A highly reviewed place known for its clean environment, fast service, and professional team.",
+      "A trusted local favorite recognized for attention to detail, consistency, and excellent customer care.",
+      "A welcoming restaurant offering great service, efficient operations, and a relaxing dining atmosphere.",
+      "A respected establishment with strong service standards and a dedication to making every visit enjoyable.",
+    ];
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -45,11 +50,27 @@ class RestaurantCard extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16),
               ),
-              child: Image.asset(
-                imagePath,
-                height: 160,
+              child: CachedNetworkImage(
+                imageUrl: restaurantModel.image,
+                height: 170,
                 width: double.infinity,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
+                placeholder: (context, url) => Container(
+                  height: 170,
+                  color: Colors.grey[200],
+                  child: const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  height: 130,
+                  color: Colors.grey[200],
+                  child: const Icon(
+                    Icons.broken_image,
+                    size: 40,
+                    color: Colors.grey,
+                  ),
+                ),
               ),
             ),
             Padding(
@@ -58,7 +79,7 @@ class RestaurantCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    restaurantModel.name,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -66,7 +87,9 @@ class RestaurantCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    description,
+                    restaurantDescriptions[rand.nextInt(
+                      restaurantDescriptions.length,
+                    )],
                     style: const TextStyle(color: Colors.black54),
                   ),
                   const SizedBox(height: 8),
@@ -75,7 +98,7 @@ class RestaurantCard extends StatelessWidget {
                       SvgPicture.asset(AppAssets.wallet, height: 14),
                       const SizedBox(width: 4),
                       Text(
-                        price.toString(),
+                        (rand.nextDouble() * 10 + 10).toStringAsFixed(2),
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.black87,
@@ -85,7 +108,7 @@ class RestaurantCard extends StatelessWidget {
                       SvgPicture.asset(AppAssets.star, height: 14),
                       const SizedBox(width: 4),
                       Text(
-                        rating.toString(),
+                        restaurantModel.rating.toString(),
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.black87,

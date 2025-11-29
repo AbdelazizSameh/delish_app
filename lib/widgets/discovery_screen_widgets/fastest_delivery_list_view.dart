@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubits/fastest_restaurants/fastest_restaurants_cubit.dart';
-import '../../models/fastest_delivery_model.dart';
 import 'fastest_delivery_card.dart';
 
 class FastestDeliveryListView extends StatelessWidget {

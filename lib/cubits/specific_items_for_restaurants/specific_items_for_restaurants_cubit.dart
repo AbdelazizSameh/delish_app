@@ -17,7 +17,7 @@ class SpecificItemsForRestaurantsCubit
     try {
       final items = await FirestoreGetters().getRestaurantItems(restaurantId);
 
-      log("Total items fetched: ${items.length}");
+      log("Total items fetched: ${items}");
 
       emit(SpecificItemsLoaded());
     } catch (e) {

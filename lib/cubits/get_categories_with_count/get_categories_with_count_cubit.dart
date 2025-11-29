@@ -14,31 +14,33 @@ class GetCategoriesWithCountCubit extends Cubit<GetCategoriesWithCountState> {
   GetCategoriesWithCountCubit() : super(GetCategoriesWithCountInitialState());
 
   StreamSubscription? _subscription;
-Future<void> fetchCategoriesWithCount() async {
-  emit(GetCategoriesWithCountLoadingState());
-  log("Fetching categories with items count…");
+  Future<void> fetchCategoriesWithCount() async {
+    if (isClosed) return;
+    emit(GetCategoriesWithCountLoadingState());
+    log("Fetching categories with items count…");
 
-  try {
-    final results = await Future.wait(
-      restaurantsIDs.map((restaurantId) async {
-        final categories = await FirestoreGetters()
-            .getCategoriesWithCount(restaurantId)
-            .first; 
-        return categories
-            .map((e) => RestaurantsCategoriesModel.fromJson(e))
-            .toList();
-      }),
-    );
+    try {
+      final results = await Future.wait(
+        restaurantsIDs.map((restaurantId) async {
+          final categories = await FirestoreGetters()
+              .getCategoriesWithCount(restaurantId)
+              .first;
+          return categories
+              .map((e) => RestaurantsCategoriesModel.fromJson(e))
+              .toList();
+        }),
+      );
 
-    final allCategories = results.expand((list) => list).toList();
-
-    emit(GetCategoriesWithCountLoadedState(categories: allCategories));
-    log("All categories loaded successfully.");
-  } catch (e) {
-    emit(GetCategoriesWithCountFailureState(message: e.toString()));
-    log("Error fetching categories: $e");
+      final allCategories = results.expand((list) => list).toList();
+      if (isClosed) return;
+      emit(GetCategoriesWithCountLoadedState(categories: allCategories));
+      log("All categories loaded successfully.");
+    } catch (e) {
+      if (isClosed) return;
+      emit(GetCategoriesWithCountFailureState(message: e.toString()));
+      log("Error fetching categories: $e");
+    }
   }
-}
 
   @override
   Future<void> close() {
