@@ -164,14 +164,12 @@ class _FavoriteViewState extends State<FavoriteView> {
           return Column(
             children: restaurants.map((rest) {
               return FoodCard(
-                imageUrl:
-                    rest["image"] ??
-                    'https://png.pngtree.com/png-vector/20221125/ourlarge/pngtree-no-image-available-icon-flatvector-illustration-pic-design-profile-vector-png-image_40966566.jpg',
-                title: rest["name"],
-                subtitle: rest["description"] ?? "",
-                restaurant: rest["type"] ?? "",
+                imageUrl: rest.image,
+                title: rest.name,
+                subtitle: "",
+                restaurant: rest.restaurnatId,
                 time: "20-40 min",
-                rating: rest["rating"]?.toString() ?? "0",
+                rating: rest.rating.toString(),
               );
             }).toList(),
           );

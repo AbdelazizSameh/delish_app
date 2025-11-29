@@ -10,7 +10,7 @@ final class GetFavouriteRestaurantsLoading
     extends GetFavouriteRestaurantsState {}
 
 final class GetFavouriteRestaurantsLoaded extends GetFavouriteRestaurantsState {
-  final List<Map<String, dynamic>> restaurants;
+  final List<RestaurantModel> restaurants;
   GetFavouriteRestaurantsLoaded({required this.restaurants});
 }
 

@@ -48,7 +48,7 @@ class FoodCard extends StatelessWidget {
                   imageUrl: imageUrl,
                   height: 160,
                   width: double.infinity,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   placeholder: (context, url) => Container(
                     height: 160,
                     color: Colors.grey.shade300,
