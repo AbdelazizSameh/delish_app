@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class CheckoutFooter extends StatelessWidget {
   final double total;
   final VoidCallback onCheckout;
-
   const CheckoutFooter({
     super.key,
     required this.total,
@@ -12,8 +11,6 @@ class CheckoutFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalLabel = '€${total.toStringAsFixed(2).replaceAll('.', ',')}';
-
     return Container(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).padding.bottom + 20,
@@ -57,7 +54,7 @@ class CheckoutFooter extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 30),
               child: Text(
-                totalLabel,
+                total.toStringAsFixed(2),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,

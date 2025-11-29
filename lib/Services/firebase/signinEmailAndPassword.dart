@@ -37,12 +37,14 @@ class SigninEmailAndPassword {
       );
       return false; // فشل تسجيل الدخول
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      if(context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('An unexpected error occurred: $e'),
           backgroundColor: Colors.red,
         ),
       );
+      }
       return false;
     }
   }

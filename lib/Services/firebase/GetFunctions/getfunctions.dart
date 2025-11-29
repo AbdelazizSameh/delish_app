@@ -105,23 +105,38 @@ class FirestoreGetters {
 
   //============================================================================
   Future<Map<String, dynamic>?> getRestaurantById(String restaurantId) async {
-  try {
-    final doc = await db.collection('restaurants').doc(restaurantId).get();
-    return doc.data();
-  } catch (e) {
-    developer.log('خطأ في جلب المطعم: $e');
-    return null;
+    try {
+      final doc = await db.collection('restaurants').doc(restaurantId).get();
+      return doc.data();
+    } catch (e) {
+      developer.log('خطأ في جلب المطعم: $e');
+      return null;
+    }
   }
-}
 
   // ====================== 9. جلب طلبات اليوزر ======================
-  Stream<QuerySnapshot> getUserOrders(String userId) {
+  Stream<List<Map<String, dynamic>>> getUserOrders(String userId) {
     return db
         .collection('users')
         .doc(userId)
         .collection('orders')
         .orderBy('createdAt', descending: true)
-        .snapshots();
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) => doc.data()).toList();
+        });
+  }
+
+  Stream<double> getTotalPricesofOrders(String userId) {
+    return db
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) => doc.data()).toList().fold(0, (previous, order) => previous + order['totalPrice']!);
+        });
   }
 
   // ====================== 10. جلب الأوردرات "جاري التحضير" ======================
@@ -162,6 +177,16 @@ class FirestoreGetters {
       developer.log('خطأ في جلب الطلب: $e');
       return null;
     }
+  }
+  // =============================جلب حالة الطلب===============================================
+  Stream<String> getOrderStatus(String userId, String orderId) {
+    return db
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .doc(orderId)
+        .snapshots()
+        .map((snapshot) => snapshot.data()!['status'] ?? '');
   }
 
   // ====================== 13. جلب التصنيفات (بدون العدد) ======================

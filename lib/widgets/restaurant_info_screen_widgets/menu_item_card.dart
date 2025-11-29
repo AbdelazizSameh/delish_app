@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/items_model.dart';
-import '../../models/menu_item_model.dart';
 import 'menu_text.dart';
 
 class MenuItemCard extends StatelessWidget {

@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 
 class StatusTracker extends StatelessWidget {
   final Color color;
+  final String status; // "placed" | "preparing" | "ready"
 
-  const StatusTracker({super.key, required this.color});
+  const StatusTracker({super.key, required this.color, required this.status});
 
   @override
   Widget build(BuildContext context) {
     final steps = [
-      {'label': 'Order Placed', 'icon': Icons.check, 'state': 'done'},
-      {'label': 'Preparing', 'icon': Icons.restaurant_menu, 'state': 'active'},
-      {
-        'label': 'Ready for Pickup',
-        'icon': Icons.shopping_bag,
-        'state': 'idle',
-      },
+      {'label': 'Order Placed', 'icon': Icons.check, 'key': 'placed'},
+      {'label': 'Preparing', 'icon': Icons.restaurant_menu, 'key': 'preparing'},
+      {'label': 'Ready for Pickup', 'icon': Icons.shopping_bag, 'key': 'ready'},
     ];
-
+    int currentIndex = steps.indexWhere((s) => s['key'] == status);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: steps.map((step) {
-        String state = step['state'] as String;
+      children: steps.asMap().entries.map((entry) {
+        int index = entry.key;
+        var step = entry.value;
 
-        bool done = state == "done";
-        bool active = state == "active";
+        bool isDone = index < currentIndex;
+        bool isActive = index == currentIndex;
 
         return Column(
           children: [
@@ -32,23 +30,23 @@ class StatusTracker extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: active
+                color: isActive
                     ? color
-                    : done
+                    : isDone
                     ? Colors.white
                     : Colors.grey.shade200,
                 border: Border.all(
-                  color: done ? color : Colors.grey.shade400,
-                  width: done ? 2 : 1,
+                  color: isDone || isActive ? color : Colors.grey.shade400,
+                  width: isDone || isActive ? 2 : 1,
                 ),
               ),
               child: Center(
                 child: Icon(
                   step['icon'] as IconData,
                   size: 26,
-                  color: active
+                  color: isActive
                       ? Colors.white
-                      : done
+                      : isDone
                       ? color
                       : Colors.grey,
                 ),
@@ -60,8 +58,8 @@ class StatusTracker extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 12,
-                color: active ? color : Colors.black87,
-                fontWeight: active ? FontWeight.bold : FontWeight.normal,
+                color: isActive ? color : Colors.black87,
+                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ],

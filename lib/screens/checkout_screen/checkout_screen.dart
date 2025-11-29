@@ -1,4 +1,7 @@
+import 'package:delish/Services/firebase/GetFunctions/getfunctions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../models/OrderModel.dart';
 import '../../widgets/checkout_screen_widgets/order_summary_list.dart';
 import '../../widgets/checkout_screen_widgets/payment_section.dart';
 import '../../widgets/checkout_screen_widgets/shipping_section.dart';
@@ -6,14 +9,8 @@ import '../../widgets/checkout_screen_widgets/submit_button.dart';
 import '../order_status/Order_status.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> orderItems;
-  final double totalAmount;
-
-  const CheckoutScreen({
-    super.key,
-    required this.orderItems,
-    required this.totalAmount,
-  });
+  CheckoutScreen({super.key, required this.orderItems});
+  List<Order> orderItems;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +49,15 @@ class CheckoutScreen extends StatelessWidget {
             const Divider(),
             const SizedBox(height: 10),
 
-            OrderSummaryList(items: orderItems, totalAmount: totalAmount),
+            StreamBuilder(
+              stream: FirestoreGetters().getUserOrders(
+                FirebaseAuth.instance.currentUser!.uid,
+              ),
+              builder: (context, asyncSnapshot) {
+                final data = asyncSnapshot.data;
+                return OrderSummaryList(items: data!.map((e) => Order.fromMap(e)).toList());
+              },
+            ),
 
             const SizedBox(height: 120),
           ],
@@ -65,7 +70,7 @@ class CheckoutScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => OrderStatusScreen(orderItems: orderItems),
+              builder: (_) => OrderStatusScreen(),
             ),
           );
         },

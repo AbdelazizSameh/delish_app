@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubits/specific_items_for_restaurants/specific_items_for_restaurants_cubit.dart';
-import '../../models/menu_item_model.dart';
 import '../../models/food_item.dart';
 import '../../screens/food_details/food_details_view.dart';
 import 'menu_item_card.dart';
@@ -17,7 +16,6 @@ class RestaurantInfoViewBody extends StatefulWidget {
   @override
   State<RestaurantInfoViewBody> createState() => _RestaurantInfoViewBodyState();
 }
-
 class _RestaurantInfoViewBodyState extends State<RestaurantInfoViewBody> {
   @override
   void initState() {

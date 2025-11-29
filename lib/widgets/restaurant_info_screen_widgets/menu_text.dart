@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../../models/items_model.dart';
-import '../../models/menu_item_model.dart';
 
 class MenuText extends StatelessWidget {
   final int index;

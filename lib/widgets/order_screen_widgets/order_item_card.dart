@@ -1,23 +1,11 @@
+import 'package:delish/models/OrderModel.dart';
 import 'package:flutter/material.dart';
 
-import 'circle_button.dart';
-
 class OrderItemCard extends StatelessWidget {
-  final Map<String, dynamic> item;
-  final VoidCallback onAdd;
-  final VoidCallback onRemove;
-
-  const OrderItemCard({
-    super.key,
-    required this.item,
-    required this.onAdd,
-    required this.onRemove,
-  });
-
+  final Order order;
+  const OrderItemCard({super.key, required this.order});
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFFFF5722);
-
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(10),
@@ -40,7 +28,7 @@ class OrderItemCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              item['imageUrl'],
+              order.image,
               width: 85,
               height: 100,
               fit: BoxFit.cover,
@@ -54,7 +42,7 @@ class OrderItemCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item['name'],
+                  order.name,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -62,14 +50,12 @@ class OrderItemCard extends StatelessWidget {
                 ),
 
                 Text(
-                  item['details'],
+                  "${order.quantity} x ${order.name}",
                   style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
                 ),
-
                 const SizedBox(height: 6),
-
                 Text(
-                  "€${item['price'].toStringAsFixed(2)}".replaceAll('.', ','),
+                  order.totalPrice.toString(),
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -77,27 +63,6 @@ class OrderItemCard extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-
-          Row(
-            children: [
-              CircleBtn(
-                icon: Icons.remove,
-                color: primaryColor,
-                onTap: onRemove,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  item['quantity'].toString(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              CircleBtn(icon: Icons.add, color: primaryColor, onTap: onAdd),
-            ],
           ),
         ],
       ),

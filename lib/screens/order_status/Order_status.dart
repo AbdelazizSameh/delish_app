@@ -1,26 +1,18 @@
+import 'package:delish/Services/firebase/GetFunctions/getfunctions.dart';
+import 'package:delish/widgets/order_status_widgets/OrderSammaryInDetails.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets/checkout_screen_widgets/summury_row.dart';
+import '../../models/OrderModel.dart';
 import '../../widgets/order_status_widgets/order_card.dart';
-import '../../widgets/order_status_widgets/order_item_row.dart';
 import '../../widgets/order_status_widgets/status_tracker.dart';
 import '../../widgets/order_status_widgets/summary_text.dart';
 
 class OrderStatusScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> orderItems;
-
-  const OrderStatusScreen({super.key, required this.orderItems});
+  const OrderStatusScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFFE65100);
-    const Color highlightColor = Color(0xFFFF7043);
-
-    final double total = orderItems.fold(
-      0,
-      (sum, item) => sum + (item['price'] * item['quantity']),
-    );
-
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -46,7 +38,7 @@ class OrderStatusScreen extends StatelessWidget {
           children: [
             OrderCard(
               title: "Order Summary",
-              children: const [
+              children: [
                 SummaryText("Restaurant: Delish", isMain: true),
                 SizedBox(height: 4),
                 SummaryText("Order Time: 01:30 PM"),
@@ -55,30 +47,38 @@ class OrderStatusScreen extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            OrderCard(
-              title: "Order Items",
-              children: [
-                ...orderItems.map((item) => OrderItemRow(item: item)),
-                const Divider(height: 24, thickness: 1),
-                SummaryRow(
-                  title: "Total:",
-                  value: "€${total.toStringAsFixed(2).replaceAll('.', ',')}",
-                ),
-              ],
+            StreamBuilder(
+              stream: FirestoreGetters().getUserOrders(
+                FirebaseAuth.instance.currentUser!.uid,
+              ),
+              builder: (context, asyncSnapshot) {
+                final data = asyncSnapshot.data;
+                final order = data?.map((e) => Order.fromMap(e)).toList() ?? [];
+                return Ordersammaryindetails(orders: order);
+              },
             ),
-
             const SizedBox(height: 16),
-
             OrderCard(
               title: "Status Tracker",
               children: [
-                StatusTracker(color: highlightColor),
+                // FutureBuilder(
+                //   future: FirestoreGetters().getOrderDetails(
+                //     FirebaseAuth.instance.currentUser!.uid,
+                //     "mmm"
+                    
+                //   ),
+                //   builder: (context, asyncSnapshot) {
+                //     return StatusTracker(color: Color(0xFFFF7043),status: 
+                    
+                //     );
+                //   }
+                // ),
                 const SizedBox(height: 24),
                 Center(
                   child: Text(
                     'Estimated Ready Time: 02:00 PM',
                     style: TextStyle(
-                      color: highlightColor,
+                      color: Color(0xFFFF7043),
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),

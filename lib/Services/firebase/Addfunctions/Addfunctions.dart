@@ -76,22 +76,52 @@ class FirestoreService {
   }
 
   // ====================== 4. إضافة طلب ======================
-  Future<DocumentReference> addOrder({
-    required String userId,
-    required String restaurantId,
-    required String restaurantName,
-    required List<Map<String, dynamic>> items,
-    required double totalPrice,
-  }) async {
-    return await db.collection('users').doc(userId).collection('orders').add({
-      'restaurantId': restaurantId,
-      'restaurantName': restaurantName,
-      'items': items,
-      'totalPrice': totalPrice,
-      'status': 'preparing',
-      'createdAt': FieldValue.serverTimestamp(),
-    });
-  }
+  // Future<DocumentReference> addOrder({
+  //   required String userId,
+  //   required String restaurantId,
+  //   required double totalPrice,
+  //   required int quantity,
+  //   required String name,
+  //   required String imageUrl,
+  // }) async {
+  //   return await db.collection('users').doc(userId).collection('orders').add({
+  //     'restaurantId': restaurantId,
+  //     'totalPrice': totalPrice,
+  //     'quantity': quantity,
+  //     'name': name,
+  //     'imageUrl': imageUrl,
+  //     'status': 'preparing',
+  //     'createdAt': FieldValue.serverTimestamp(),
+  //   });
+  // }
+  Future<String> addOrder({
+  required String userId,
+  required String restaurantId,
+  required double totalPrice,
+  required int quantity,
+  required String name,
+  required String imageUrl,
+}) async {
+  // 1. إضافة المستند
+  final ref = await db
+      .collection('users')
+      .doc(userId)
+      .collection('orders')
+      .add({
+    'restaurantId': restaurantId,
+    'totalPrice': totalPrice,
+    'quantity': quantity,
+    'name': name,
+    'imageUrl': imageUrl,
+    'status': 'preparing',
+    'createdAt': FieldValue.serverTimestamp(),
+  });
+  // 2. جلب المستند بعد الإضافة
+  final doc = await ref.get();
+  // 3. إرجاعه
+  return doc.id;
+}
+
 
   // ====================== 5. إضافة مطعم للمفضلة ======================
   Future<void> addFavoriteRestaurant({
@@ -149,7 +179,6 @@ class FirestoreService {
         'restaurantId': restaurantId,
         'saved_at': FieldValue.serverTimestamp(),
       });
-      
 
       developer.log('تم إضافة "$itemName" للمفضلة');
     } catch (e) {

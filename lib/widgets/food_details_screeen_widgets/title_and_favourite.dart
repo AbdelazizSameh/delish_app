@@ -19,7 +19,7 @@ class TitleAndFavorite extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(name, style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+        Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         AddFavouriteWidget(onFavTap: onFavTap, isFavorite: isFavorite),
       ],
     );

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'carousel_slider_builder.dart';
 import '../Global/custom_sliver_app_bar.dart';
 import 'fastest_delivery_list_view.dart';
-import 'popular_items_list_view.dart';
 import '../Global/section_header.dart';
 import 'popular_items_list_view_provider.dart';
 

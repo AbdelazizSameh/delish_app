@@ -1,4 +1,3 @@
-import 'package:delish/cubits/general_popular_items/general_popular_items_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubits/fastest_restaurants/fastest_restaurants_cubit.dart';

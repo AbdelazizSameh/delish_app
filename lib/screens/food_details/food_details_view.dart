@@ -1,3 +1,4 @@
+import 'package:delish/models/popular_item_model.dart';
 import 'package:flutter/material.dart';
 import '../../models/food_item.dart';
 import '../../widgets/food_details_screeen_widgets/food_details_body.dart';
@@ -27,7 +28,7 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    final food = widget.food;
+    final foodItem = widget.food;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -35,10 +36,10 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const RestaurantAndFoodHeader(image: ''),
+             RestaurantAndFoodHeader(image: foodItem.image),
 
             FoodDetailsBody(
-              food: food,
+              food: foodItem,
               isFavorite: isFavorite,
               addonSelected: addonSelected,
               addPackage: addPackage,

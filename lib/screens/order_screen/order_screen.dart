@@ -1,63 +1,17 @@
+import 'package:delish/models/OrderModel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../Services/firebase/GetFunctions/getfunctions.dart';
 import '../../widgets/order_screen_widgets/checkout_footer.dart';
 import '../../widgets/order_screen_widgets/order_item_card.dart';
-import '../../widgets/order_screen_widgets/recommendation_card.dart';
 import '../../widgets/order_screen_widgets/total_row.dart';
 import '../checkout_screen/checkout_screen.dart';
 
-class OrderScreen extends StatefulWidget {
+class OrderScreen extends StatelessWidget {
   const OrderScreen({super.key});
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
-}
-
-class _OrderScreenState extends State<OrderScreen> {
-  List<Map<String, dynamic>> orderItems = [
-    {
-      'name': 'Carbonara pasta',
-      'details': '+ Packaging fee \n + Parmesan cheese',
-      'price': 12.50,
-      'quantity': 1,
-      'imageUrl':
-          'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=600',
-    },
-    {
-      'name': 'Carbonara pasta',
-      'details': '+ Packaging fee \n + Parmesan cheese',
-      'price': 15.50,
-      'quantity': 1,
-      'imageUrl':
-          'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=600',
-    },
-  ];
-
-  final List<Map<String, dynamic>> recommendations = [
-    {
-      'name': 'Tiramisu',
-      'price': 6.80,
-      'imageUrl':
-          'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600',
-    },
-  ];
-
-  void increase(int index) => setState(() => orderItems[index]['quantity']++);
-
-  void decrease(int index) {
-    if (orderItems[index]['quantity'] > 1) {
-      setState(() => orderItems[index]['quantity']--);
-    }
-  }
-
-  double get total => orderItems.fold(
-    0.0,
-    (sum, item) => sum + (item['price'] * item['quantity']),
-  );
-
-  @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFFFF5722);
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -79,61 +33,79 @@ class _OrderScreenState extends State<OrderScreen> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-
-            ...List.generate(
-              orderItems.length,
-              (i) => OrderItemCard(
-                item: orderItems[i],
-                onAdd: () => increase(i),
-                onRemove: () => decrease(i),
+            StreamBuilder(
+              stream: FirestoreGetters().getUserOrders(
+                FirebaseAuth.instance.currentUser!.uid,
               ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No orders found.'));
+                } else {
+                  List<Order> orders = snapshot.data!
+                      .map((order) => Order.fromMap(order))
+                      .toList();
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: orders.length,
+                          itemBuilder: (context, index) {
+                            return OrderItemCard(order: orders[index]);
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  );
+                }
+              },
             ),
-
             const SizedBox(height: 8),
             const Divider(),
-
-            TotalRow(amount: total, color: primaryColor),
+            StreamBuilder(
+              stream: FirestoreGetters().getTotalPricesofOrders(
+                FirebaseAuth.instance.currentUser!.uid,
+              ),
+              builder: (context, asyncSnapshot) {
+                return TotalRow(price: asyncSnapshot.data ?? 0);
+              },
+            ),
 
             const Divider(),
-            const SizedBox(height: 12),
-
-            const Text(
-              'Recommendations',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 15),
-
-            SizedBox(
-              height: 180,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: recommendations.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 15),
-                itemBuilder: (_, index) {
-                  final r = recommendations[index];
-                  return RecommendationCard(
-                    name: r['name'],
-                    price: r['price'],
-                    imageUrl: r['imageUrl'],
-                  );
-                },
-              ),
-            ),
-
-            const SizedBox(height: 100),
+            const SizedBox(height: 112),
           ],
         ),
       ),
+      bottomNavigationBar: StreamBuilder(
+        stream: FirestoreGetters().getTotalPricesofOrders(
+          FirebaseAuth.instance.currentUser!.uid,
+        ),
+        builder: (context, asyncSnapshot) {
+          return CheckoutFooter(
+            total: asyncSnapshot.data ?? 0,
+            onCheckout: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (_) => 
+              //     StreamBuilder(
+              //       stream: FirestoreGetters()(
+              //         FirebaseAuth.instance.currentUser!.uid,
 
-      bottomNavigationBar: CheckoutFooter(
-        total: total,
-        onCheckout: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) =>
-                  CheckoutScreen(orderItems: orderItems, totalAmount: total),
-            ),
+              //       ),
+              //       builder: (context, asyncSnapshot) {
+              //         return CheckoutScreen(
+              //           orderItems: asyncSnapshot.data!.map((e) => Order.fromMap(e)).toList(),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // );
+            },
           );
         },
       ),

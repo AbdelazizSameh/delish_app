@@ -22,6 +22,5 @@ class HeaderImage extends StatelessWidget {
         child: const Icon(Icons.broken_image, size: 40, color: Colors.grey),
       ),
     );
-    ;
   }
 }
