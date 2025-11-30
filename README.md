@@ -66,36 +66,6 @@ DelishApp is a mobile application built using **Flutter** that allows users to b
     
 5.  Proceed to checkout.
     
-
-----------
-
-## 📡 API Documentation (Example)
-
-### **GET /search**
-
-Search for items or restaurants.
-
-**Parameters:**
-
--   `query`: search keyword
-    
-
-**Sample Response:**
-
-```
-{
-  "results": [
-    {
-      "id": 101,
-      "title": "Chicken Pasta",
-      "image": "url",
-      "readyInMinutes": 30
-    }
-  ]
-}
-
-```
-
 ----------
 
 ## 🗂 Folder Architecture — Project Structure
