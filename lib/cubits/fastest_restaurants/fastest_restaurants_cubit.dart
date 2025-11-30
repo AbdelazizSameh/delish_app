@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:delish/Services/firebase/GetFunctions/getfunctions.dart';
+import 'package:delish/models/restaurants_model.dart';
 import 'package:meta/meta.dart';
-
-import '../../models/fastest_delivery_model.dart';
 
 part 'fastest_restaurants_state.dart';
 
@@ -22,8 +21,9 @@ class FastestRestaurantsCubit extends Cubit<FastestRestaurantsState> {
         (snapshot) {
           final restaurants = snapshot.docs
               .map(
-                (doc) => FastestDeliveryModel.fromJson(
+                (doc) => RestaurantModel.fromMap(
                   doc.data() as Map<String, dynamic>,
+                  doc.id,
                 ),
               )
               .toList();

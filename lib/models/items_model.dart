@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemModel {
   final String id;
+  final String restaurantId;
+  String? categoryId;
   final String image;
   final String name;
   final String description;
@@ -12,7 +14,9 @@ class ItemModel {
   final Timestamp createdAt;
 
   ItemModel({
+    this.categoryId,
     required this.id,
+    required this.restaurantId,
     required this.image,
     required this.name,
     required this.description,
@@ -23,15 +27,22 @@ class ItemModel {
     required this.createdAt,
   });
 
-  factory ItemModel.fromMap(Map<String, dynamic> data, String documentId) {
+  factory ItemModel.fromMap(
+    Map<String, dynamic> data,
+    String itemId,
+    String restaurantId,
+    String? categoryId,
+  ) {
     return ItemModel(
-      id: documentId,
+      id: itemId,
+      restaurantId: restaurantId,
+      categoryId: categoryId ?? '',
       image: data['image'] ?? '',
       name: data['name'] ?? '',
       description: data['description'] ?? '',
       price: (data['price'] ?? 0).toDouble(),
       discount: (data['discount'] ?? 0).toDouble(),
-      priceAfterDiscount: (data['priceAfterDiscount'] ?? 0).toDouble(),
+      priceAfterDiscount: (data['price_after_discount'] ?? 0).toDouble(),
       isPopular: data['isPopular'] ?? false,
       createdAt: data['createdAt'] ?? Timestamp.now(),
     );

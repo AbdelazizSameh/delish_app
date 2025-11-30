@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delish/models/restaurants_model.dart';
 import 'package:delish/utils/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../models/fastest_delivery_model.dart';
 
 class FastestDeliveryCard extends StatelessWidget {
-  final FastestDeliveryModel deliveryItem;
+  final RestaurantModel deliveryItem;
 
   const FastestDeliveryCard({super.key, required this.deliveryItem});
 
@@ -50,7 +50,7 @@ class FastestDeliveryCard extends StatelessWidget {
               topRight: Radius.circular(20),
             ),
             child: CachedNetworkImage(
-              imageUrl: deliveryItem.imageUrl,
+              imageUrl: deliveryItem.image,
               height: 130,
               width: double.infinity,
               fit: BoxFit.contain,

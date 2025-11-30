@@ -15,6 +15,7 @@ class FastestDeliveryListView extends StatelessWidget {
           return SizedBox(
             height: 250,
             child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
               itemCount: state.restaurants.length,
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,

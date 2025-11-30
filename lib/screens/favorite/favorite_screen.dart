@@ -122,14 +122,12 @@ class _FavoriteViewState extends State<FavoriteView> {
           return Column(
             children: items.map((item) {
               return FoodCard(
-                imageUrl:
-                    item["image"] ??
-                    "https://png.pngtree.com/png-vector/20221125/ourlarge/pngtree-no-image-available-icon-flatvector-illustration-pic-design-profile-vector-png-image_40966566.jpg",
-                title: item["name"],
-                subtitle: item["description"] ?? "",
-                restaurant: item["restaurantName"] ?? "",
+                imageUrl: item.image,
+                title: item.name,
+                subtitle: item.description,
+                restaurant: item.restaurantId,
                 time: "20-50 min",
-                rating: item["rating"]?.toString() ?? "0",
+                price: item.price,
               );
             }).toList(),
           );
@@ -169,7 +167,7 @@ class _FavoriteViewState extends State<FavoriteView> {
                 subtitle: "",
                 restaurant: rest.restaurnatId,
                 time: "20-40 min",
-                rating: rest.rating.toString(),
+                rating: rest.rating,
               );
             }).toList(),
           );

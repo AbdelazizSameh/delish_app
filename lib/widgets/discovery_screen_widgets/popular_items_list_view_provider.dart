@@ -10,8 +10,8 @@ class PopularItemsListViewProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PopularItemsCubit()..fetchPopularItems(),
-      child: PopularItemsListView(),
+      create: (context) => GenaralPopularItemsCubit()..fetchPopularItems(),
+      child: const PopularItemsListView(),
     );
   }
 }

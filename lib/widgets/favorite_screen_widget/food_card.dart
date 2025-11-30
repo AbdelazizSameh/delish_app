@@ -7,16 +7,18 @@ class FoodCard extends StatelessWidget {
   final String subtitle;
   final String restaurant;
   final String time;
-  final String rating;
+  double? rating;
+  double? price;
 
-  const FoodCard({
+  FoodCard({
     super.key,
     required this.imageUrl,
     required this.title,
     required this.subtitle,
     required this.restaurant,
     required this.time,
-    required this.rating,
+    this.rating,
+    this.price,
   });
 
   @override
@@ -103,8 +105,28 @@ class FoodCard extends StatelessWidget {
                         const SizedBox(width: 4),
                         Text(time, style: const TextStyle(fontSize: 13)),
                         const SizedBox(width: 8),
-                        const Icon(Icons.star, size: 16, color: Colors.orange),
-                        Text(rating, style: const TextStyle(fontSize: 13)),
+                        if (price == null)
+                          const Icon(
+                            Icons.star,
+                            size: 16,
+                            color: Colors.orange,
+                          ),
+                        if (price == null)
+                          Text(
+                            rating.toString(),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        if (rating == null)
+                          const Icon(
+                            Icons.attach_money,
+                            size: 16,
+                            color: Colors.orange,
+                          ),
+                        if (rating == null)
+                          Text(
+                            price.toString(),
+                            style: const TextStyle(fontSize: 13),
+                          ),
                       ],
                     ),
                   ],

@@ -1,44 +1,28 @@
-import 'dart:async';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:delish/Services/firebase/GetFunctions/getfunctions.dart';
 import 'package:meta/meta.dart';
 
+import '../../models/items_model.dart';
+
 part 'general_popular_items_state.dart';
 
-class PopularItemsCubit extends Cubit<GenaralPopularItemsState> {
-  PopularItemsCubit() : super(GenaralPopularItemsInitialState());
+class GenaralPopularItemsCubit extends Cubit<GenaralPopularItemsState> {
+  GenaralPopularItemsCubit() : super(GenaralPopularItemsInitialState());
 
-  StreamSubscription? _subscription;
-
-  void fetchPopularItems() {
+  Future<void> fetchPopularItems() async {
     emit(GenaralPopularItemsLoadingState());
     log("Fetching popular items...");
 
     try {
-      _subscription = FirestoreGetters().getPopularItems().listen(
-        (snapshot) {
-          final items = snapshot.docs
-              .map((doc) => doc.data() as Map<String, dynamic>)
-              .toList();
+      final items = await FirestoreGetters().getAllPopularItems();
 
-          log("Loaded $items popular items");
-          if (isClosed) return;
-          emit(GenaralPopularItemsLoadedState());
-        },
-        onError: (e) {
-          log("Error: $e");
-          emit(GenaralPopularItemsFailureState(message: e.toString()));
-        },
-      );
+      log("Loaded ${items.length} popular items");
+
+      emit(GenaralPopularItemsLoadedState(items: items));
     } catch (e) {
+      if (isClosed) return;
       emit(GenaralPopularItemsFailureState(message: e.toString()));
     }
-  }
-
-  @override
-  Future<void> close() {
-    _subscription?.cancel();
-    return super.close();
   }
 }

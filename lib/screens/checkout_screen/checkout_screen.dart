@@ -1,7 +1,7 @@
 import 'package:delish/Services/firebase/GetFunctions/getfunctions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../models/OrderModel.dart';
+import '../../models/order.dart';
 import '../../widgets/checkout_screen_widgets/order_summary_list.dart';
 import '../../widgets/checkout_screen_widgets/payment_section.dart';
 import '../../widgets/checkout_screen_widgets/shipping_section.dart';
@@ -47,25 +47,25 @@ class CheckoutScreen extends StatelessWidget {
             const Divider(),
             const SizedBox(height: 10),
 
-           FutureBuilder<Map<String, dynamic>?>(
-  future: FirestoreGetters().getOrderDetails(
-    FirebaseAuth.instance.currentUser!.uid,
-    orderId,
-  ),
-  builder: (context, asyncSnapshot) {
-    if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-      return const Center(child: CircularProgressIndicator());
-    } else if (asyncSnapshot.hasError) {
-      return Center(child: Text('Error: ${asyncSnapshot.error}'));
-    } else if (!asyncSnapshot.hasData || asyncSnapshot.data == null) {
-      return const Center(child: Text('Order not found.'));
-    }
+            FutureBuilder<Map<String, dynamic>?>(
+              future: FirestoreGetters().getOrderDetails(
+                FirebaseAuth.instance.currentUser!.uid,
+                orderId,
+              ),
+              builder: (context, asyncSnapshot) {
+                if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (asyncSnapshot.hasError) {
+                  return Center(child: Text('Error: ${asyncSnapshot.error}'));
+                } else if (!asyncSnapshot.hasData ||
+                    asyncSnapshot.data == null) {
+                  return const Center(child: Text('Order not found.'));
+                }
 
-    final data = Order.fromMap(asyncSnapshot.data!);
-    return OrderSummaryList(order: data, orderId: orderId);
-  },
-),
-
+                final data = Order.fromMap(asyncSnapshot.data!);
+                return OrderSummaryList(order: data, orderId: orderId);
+              },
+            ),
 
             const SizedBox(height: 120),
           ],
@@ -77,10 +77,9 @@ class CheckoutScreen extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => OrderStatusScreen(
-              orderId: orderId,
-
-            )),
+            MaterialPageRoute(
+              builder: (_) => OrderStatusScreen(orderId: orderId),
+            ),
           );
         },
       ),

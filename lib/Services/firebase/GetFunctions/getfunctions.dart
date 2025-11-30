@@ -5,6 +5,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
+import '../../../models/items_model.dart';
+
 class FirestoreGetters {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -27,11 +29,57 @@ class FirestoreGetters {
   }
 
   // ====================== 4. جلب العناصر المشهورة ======================
-  Stream<QuerySnapshot> getPopularItems() {
-    return db
-        .collection('items')
-        .where('isPopular', isEqualTo: true)
-        .snapshots();
+  Future<List<ItemModel>> getAllPopularItems() async {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+
+    try {
+      List<ItemModel> popularItems = [];
+
+      // Step 1: Get all restaurants
+      final restaurantsSnapshot = await db.collection('restaurants').get();
+
+      for (var restaurantDoc in restaurantsSnapshot.docs) {
+        final restaurantId = restaurantDoc.id;
+
+        // Step 2: Get all categories inside this restaurant
+        final categoriesSnapshot = await db
+            .collection('restaurants')
+            .doc(restaurantId)
+            .collection('categories')
+            .get();
+
+        for (var categoryDoc in categoriesSnapshot.docs) {
+          final categoryId = categoryDoc.id;
+
+          final itemsSnapshot = await db
+              .collection('restaurants')
+              .doc(restaurantId)
+              .collection('categories')
+              .doc(categoryId)
+              .collection('items')
+              .where('isPopular', isEqualTo: true)
+              .get();
+
+          for (var itemDoc in itemsSnapshot.docs) {
+            final data = itemDoc.data();
+
+            popularItems.add(
+              ItemModel.fromMap(
+                data,
+                itemDoc.id, // itemId
+                restaurantId, // restaurantId
+                categoryId,
+              ),
+            );
+          }
+        }
+      }
+
+      return popularItems;
+    } catch (e) {
+      developer.log("Error fetching popular items: $e");
+      return [];
+    }
   }
 
   // ====================== 5. جلب التصنيفات مع عدد العناصر ======================
@@ -82,6 +130,34 @@ class FirestoreGetters {
       return null;
     }
   }
+  //=============================================================
+
+  Future<Map<String, dynamic>?> getItemById({
+    required String restaurantId,
+    required String itemId,
+  }) async {
+    final db = FirebaseFirestore.instance;
+
+    // نجيب كل الكاتيجوريز
+    var categoriesSnapshot = await db
+        .collection('restaurants')
+        .doc(restaurantId)
+        .collection('categories')
+        .get();
+
+    for (var category in categoriesSnapshot.docs) {
+      var itemDoc = await category.reference
+          .collection('items')
+          .doc(itemId)
+          .get();
+
+      if (itemDoc.exists) {
+        return itemDoc.data();
+      }
+    }
+
+    return null;
+  }
 
   // ====================== 7. جلب مفضلة العناصر ======================
   Stream<QuerySnapshot> getFavoriteItems(String userId) {
@@ -128,27 +204,30 @@ class FirestoreGetters {
   }
 
   Stream<double> getTotalPriceOfOrder(String userId, String orderId) {
-  return db
-      .collection('users')
-      .doc(userId)
-      .collection('orders')
-      .doc(orderId)
-      .snapshots()
-      .map((doc) {
-        if (!doc.exists) return 0;
-        return (doc.data()?['totalPrice'] ?? 0).toDouble();
-      });
-}
+    return db
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .doc(orderId)
+        .snapshots()
+        .map((doc) {
+          if (!doc.exists) return 0;
+          return (doc.data()?['totalPrice'] ?? 0).toDouble();
+        });
+  }
 
-Stream<Map<String, dynamic>?> getOrderDetailsStream(String userId, String orderId) {
-  return db
-      .collection('users')
-      .doc(userId)
-      .collection('orders')
-      .doc(orderId)
-      .snapshots()
-      .map((doc) => doc.data());
-}
+  Stream<Map<String, dynamic>?> getOrderDetailsStream(
+    String userId,
+    String orderId,
+  ) {
+    return db
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .doc(orderId)
+        .snapshots()
+        .map((doc) => doc.data());
+  }
 
   // ====================== 10. جلب الأوردرات "جاري التحضير" ======================
   Stream<QuerySnapshot> getPreparingOrders(String userId) {
@@ -174,23 +253,23 @@ Stream<Map<String, dynamic>?> getOrderDetailsStream(String userId, String orderI
 
   // ====================== 12. جلب تفاصيل طلب (مرة واحدة) ======================
   Future<Map<String, dynamic>?> getOrderDetails(
-  String userId,
-  String orderId,
-) async {
-  try {
-    final doc = await db
-        .collection('users')
-        .doc(userId)
-        .collection('orders')
-        .doc(orderId)
-        .get();
+    String userId,
+    String orderId,
+  ) async {
+    try {
+      final doc = await db
+          .collection('users')
+          .doc(userId)
+          .collection('orders')
+          .doc(orderId)
+          .get();
 
-    return doc.data(); // Map<String, dynamic>?
-  } catch (e) {
-    developer.log('خطأ في جلب الطلب: $e');
-    return null;
+      return doc.data(); // Map<String, dynamic>?
+    } catch (e) {
+      developer.log('خطأ في جلب الطلب: $e');
+      return null;
+    }
   }
-}
 
   // =============================جلب حالة الطلب===============================================
   Stream<String> getOrderStatus(String userId, String orderId) {
@@ -227,10 +306,15 @@ Stream<Map<String, dynamic>?> getOrderDetailsStream(String userId, String orderI
         .get();
 
     for (var categoryDoc in categoriesSnapshot.docs) {
+      final catregoryId = categoryDoc.id;
       var itemsSnapshot = await categoryDoc.reference.collection('items').get();
 
       for (var itemDoc in itemsSnapshot.docs) {
-        allItems.add({"id": itemDoc.id, ...itemDoc.data()});
+        allItems.add({
+          "id": itemDoc.id,
+          "catregoryId": catregoryId,
+          ...itemDoc.data(),
+        });
       }
     }
 

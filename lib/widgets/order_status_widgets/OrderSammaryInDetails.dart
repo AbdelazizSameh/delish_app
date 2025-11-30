@@ -1,5 +1,6 @@
-import 'package:delish/models/OrderModel.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/order.dart';
 
 class Ordersammaryindetails extends StatelessWidget {
   const Ordersammaryindetails({super.key, required this.orders});

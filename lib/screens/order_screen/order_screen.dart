@@ -1,8 +1,8 @@
-import 'package:delish/models/OrderModel.dart';
 import 'package:delish/screens/checkout_screen/checkout_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../Services/firebase/GetFunctions/getfunctions.dart';
+import '../../models/order.dart';
 import '../../widgets/order_screen_widgets/checkout_footer.dart';
 import '../../widgets/order_screen_widgets/order_item_card.dart';
 import '../../widgets/order_screen_widgets/total_row.dart';

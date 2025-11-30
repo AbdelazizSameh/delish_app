@@ -4,7 +4,7 @@ import 'package:delish/widgets/order_status_widgets/OrderSammaryInDetails.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/OrderModel.dart';
+import '../../models/order.dart';
 import '../../widgets/order_status_widgets/order_card.dart';
 import '../../widgets/order_status_widgets/summary_text.dart';
 

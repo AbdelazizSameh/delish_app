@@ -8,7 +8,8 @@ final class GenaralPopularItemsInitialState extends GenaralPopularItemsState {}
 final class GenaralPopularItemsLoadingState extends GenaralPopularItemsState {}
 
 final class GenaralPopularItemsLoadedState extends GenaralPopularItemsState {
-  GenaralPopularItemsLoadedState();
+  final List<ItemModel> items;
+  GenaralPopularItemsLoadedState({required this.items});
 }
 
 final class GenaralPopularItemsFailureState extends GenaralPopularItemsState {

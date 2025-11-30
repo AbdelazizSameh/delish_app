@@ -19,7 +19,14 @@ class SpecificItemsForRestaurantsCubit
       final items = await FirestoreGetters().getRestaurantItems(restaurantId);
       final List<ItemModel> itemsModel = [];
       for (var element in items) {
-        itemsModel.add(ItemModel.fromMap(element, element['id']));
+        itemsModel.add(
+          ItemModel.fromMap(
+            element,
+            element['id'],
+            restaurantId,
+            element['catregoryId'],
+          ),
+        );
       }
 
       emit(SpecificItemsLoaded(itemsModel));

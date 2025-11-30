@@ -6,7 +6,7 @@ sealed class FastestRestaurantsState {}
 final class FastestRestaurantsInitialState extends FastestRestaurantsState {}
 
 final class FastestRestaurantsLoadedState extends FastestRestaurantsState {
-  final List<FastestDeliveryModel> restaurants;
+  final List<RestaurantModel> restaurants;
 
   FastestRestaurantsLoadedState({required this.restaurants});
 }
