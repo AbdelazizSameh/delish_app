@@ -13,10 +13,13 @@ class Order {
   final double totalPrice;
   final Timestamp createdAt;
 
+  String? orderId;
+
   Order({
     required this.idForSearch,
     this.id,
     this.userId,
+    this.orderId,
     required this.restaurantId,
     required this.name,
     required this.image,
@@ -26,9 +29,14 @@ class Order {
     required this.createdAt,
   });
 
-  factory Order.fromMap(Map<String, dynamic> map, String? userId) {
+  factory Order.fromMap(
+    Map<String, dynamic> map,
+    String? userId,
+    String? orderId,
+  ) {
     return Order(
       id: map['id'].toString(),
+      orderId: orderId ?? '',
       restaurantId: map['restaurantId'] ?? '',
       userId: userId ?? '',
       name: map['name'] ?? '',

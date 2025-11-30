@@ -47,6 +47,7 @@ dependencies:
   cached_network_image: ^3.4.1
   glassy_navbar: ^0.0.9
   flutter_bloc: ^9.1.1
+  modal_progress_hud_nsn: ^0.5.1
 
 dev_dependencies:
   flutter_test:

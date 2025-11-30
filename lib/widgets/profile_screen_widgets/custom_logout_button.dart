@@ -1,3 +1,4 @@
+import 'package:delish/Screens/Auth/auth_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +15,12 @@ class CustomLogoutButton extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: () async {
         await FirebaseAuth.instance.signOut();
+        if (context.mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const AuthWrapper()),
+          );
+        }
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,

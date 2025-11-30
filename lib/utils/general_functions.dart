@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delish/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 UserModel? userModel;
 Future<Map<String, dynamic>?> getCurrentUserInfo() async {
   var user = FirebaseAuth.instance.currentUser;
@@ -34,9 +33,15 @@ Future<void> getAllRestaurantsID() async {
     log("Error fetching restaurant IDs: $e");
   }
 }
-  String formatDateTime(DateTime dateTime) {
-    final hour = dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour;
-    final minute = dateTime.minute.toString().padLeft(2, '0');
-    final period = dateTime.hour >= 12 ? 'PM' : 'AM';
-    return '$hour:$minute $period';
-  }
+
+String formatDateTime(DateTime dateTime) {
+  final hour = dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour;
+  final minute = dateTime.minute.toString().padLeft(2, '0');
+  final period = dateTime.hour >= 12 ? 'PM' : 'AM';
+  return '$hour:$minute $period';
+}
+
+var appUserId = FirebaseAuth.instance.currentUser?.uid;
+
+
+

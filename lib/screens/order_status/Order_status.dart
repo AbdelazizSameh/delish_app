@@ -63,7 +63,7 @@ class OrderStatusScreen extends StatelessWidget {
                 }
                 final currentUser = FirebaseAuth.instance.currentUser?.uid;
 
-                final data = Order.fromMap(asyncSnapshot.data!,currentUser);
+                final data = Order.fromMap(asyncSnapshot.data!,currentUser,orderId);
                 return Ordersammaryindetails(orders: data);
               },
             ),

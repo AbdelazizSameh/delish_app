@@ -62,7 +62,7 @@ class CheckoutScreen extends StatelessWidget {
                   return const Center(child: Text('Order not found.'));
                 }
                 final currentUser = FirebaseAuth.instance.currentUser?.uid;
-                final data = Order.fromMap(asyncSnapshot.data!, currentUser);
+                final data = Order.fromMap(asyncSnapshot.data!, currentUser,null);
                 return OrderSummaryList(order: data, orderId: orderId);
               },
             ),

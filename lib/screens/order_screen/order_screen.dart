@@ -53,7 +53,7 @@ class OrderScreen extends StatelessWidget {
                 }
                 final currentUser = FirebaseAuth.instance.currentUser?.uid;
 
-                Order order = Order.fromMap(snapshot.data!, currentUser);
+                Order order = Order.fromMap(snapshot.data!, currentUser,orderId);
 
                 return Column(
                   children: [

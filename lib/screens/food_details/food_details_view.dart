@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Services/firebase/Addfunctions/Addfunctions.dart';
 import '../../cubits/fav_restaurant_and_item/fav_restaurant_and_item_cubit.dart';
 import '../../models/order.dart';
+import '../../utils/general_functions.dart';
 import '../../widgets/Global/restaurant_and_food_header.dart';
 import '../../widgets/food_details_screeen_widgets/food_details_body.dart';
 import '../../widgets/food_details_screeen_widgets/footer.dart';
@@ -58,9 +59,7 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
                     builder: (context, state) {
                       bool isFav = false;
                       if (state is FavRestaurantAndItemLoaded) {
-                        isFav = state.favoriteItems.contains(
-                          food.id,
-                        );
+                        isFav = state.favoriteItems.contains(food.id);
                       }
 
                       return FoodDetailsBody(
@@ -113,6 +112,7 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
 
           onAddToOrder: () async {
             final order = Order(
+              userId: appUserId,
               id: food.id,
               restaurantId: food.restaurantId,
               name: food.name,
@@ -133,8 +133,8 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
                 name: order.name,
                 imageUrl: order.image,
               );
-
-              log("Order added successfully with ID: ${doc.id}");
+              doc.update({"orderId": doc.id});
+              log("Order added successfully with ");
               Navigator.push(
                 context,
                 MaterialPageRoute(

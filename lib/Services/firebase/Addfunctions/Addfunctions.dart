@@ -86,17 +86,17 @@ class FirestoreService {
     required String idForSearch,
     String? imageUrl,
   }) async {
-
-    
     return await db.collection('users').doc(userId).collection('orders').add({
       'restaurantId': restaurantId,
       'id': Random().nextInt(10000),
+      'userId': userId,
       'idForSearch': idForSearch,
       'totalPrice': totalPrice,
       'quantity': quantity,
       'name': name,
       'image': imageUrl,
       'status': 'preparing',
+      'orderId': '',
       'createdAt': FieldValue.serverTimestamp(),
     });
   }
