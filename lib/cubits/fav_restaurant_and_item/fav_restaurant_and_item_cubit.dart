@@ -10,7 +10,6 @@ class FavRestaurantAndItemCubit extends Cubit<FavRestaurantAndItemState> {
   FavRestaurantAndItemCubit({required this.firestoreService})
     : super(FavRestaurantAndItemInitial());
 
-  // ====================== Load favorites ======================
   Future<void> loadFavorites(String userId) async {
     emit(FavRestaurantAndItemLoading());
     try {
@@ -43,13 +42,12 @@ class FavRestaurantAndItemCubit extends Cubit<FavRestaurantAndItemState> {
     }
   }
 
-  // ====================== Toggle Favorite ======================
   Future<void> toggleFavorite({
     required String userId,
-    required String type, // 'restaurant' or 'item'
+    required String type, 
     required String id,
     String? name,
-    String? restaurantId, // for item
+    String? restaurantId, 
   }) async {
     emit(FavRestaurantAndItemLoading());
 
@@ -93,11 +91,11 @@ class FavRestaurantAndItemCubit extends Cubit<FavRestaurantAndItemState> {
       // Reload after toggle
       await loadFavorites(userId);
     } catch (e) {
+      if (isClosed) return;
       emit(FavRestaurantAndItemError('خطأ في تحديث المفضلة: $e'));
     }
   }
 
-  // ====================== Check if single item/restaurant is favorite ======================
   Future<bool> isFavorite({
     required String userId,
     required String type,
