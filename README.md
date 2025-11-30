@@ -149,6 +149,52 @@ It is developed using **Flutter & Firebase**, with state management via **Bloc**
 -   Git & GitHub
     
 -   Figma for UI design
+
+----------
+
+## 📂 Folder Structure
+project-name/
+ ── lib/
+    ├── core/                   
+    │   ├── utils/
+    │   ├── constants/
+    │   ├── routes/
+    │   └── theme/
+    |
+    ├── data/                    
+    │   ├── models/                
+    │   └── services/              
+    |       ├── auth_service.dart
+    |       ├── restaurant_service.dart
+    |       └── order_service.dart
+    |
+    ├── domain/                    
+    │   ├── repositories/          
+    │   └── usecases/             
+    |
+    ├── presentation/             
+    │   ├── manager/               
+    │   │   ├── auth_cubit/
+    │   │   ├── restaurant_cubit/
+    │   │   └── order_cubit/
+    │   |
+    │   ├── screens/                 
+    │   │   ├── Dashboard/         
+    │   │   ├── Search/
+    │   │   ├── Favorite/
+    │   │   ├── Restaurants/       
+    │   │   ├── RestaurantsInfoView/ 
+    │   │   ├── FoodDetailsPage/
+    │   │   ├── Checkout/
+    │   │   ├── Order/             
+    │   │   └── ProfileView/
+    │   |
+    │   └── widgets/              
+    │       ├── common/            
+    │       ├── restaurant_widgets/
+    │       └── order_widgets/
+    |
+    └── main.dart
     
 
     
