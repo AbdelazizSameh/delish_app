@@ -1,5 +1,5 @@
+import 'package:delish/models/items_model.dart';
 import 'package:flutter/material.dart';
-import '../../models/food_item.dart';
 import 'add_on_section.dart';
 import 'description.dart';
 import 'package_option.dart';
@@ -7,7 +7,7 @@ import 'prices_widget.dart';
 import 'title_and_favourite.dart';
 
 class FoodDetailsBody extends StatelessWidget {
-  final FoodItem food;
+  final ItemModel food;
   final bool isFavorite;
   final List<bool> addonSelected;
   final bool addPackage;

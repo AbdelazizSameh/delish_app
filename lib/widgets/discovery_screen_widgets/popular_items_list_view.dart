@@ -1,3 +1,4 @@
+import 'package:delish/screens/food_details/food_details_view.dart';
 import 'package:delish/widgets/discovery_screen_widgets/popular_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class PopularItemsListView extends StatelessWidget {
             child: Center(
               child: Text(
                 "Failed to load the items",
-                style:  TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.red),
               ),
             ),
           );
@@ -40,7 +41,18 @@ class PopularItemsListView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: items.length,
               itemBuilder: (context, index) {
-                return PopularItem(item: items[index]);
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            FoodDetailsView(food: items[index]),
+                      ),
+                    );
+                  },
+                  child: PopularItem(item: items[index]),
+                );
               },
             ),
           );

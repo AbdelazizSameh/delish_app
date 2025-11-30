@@ -1,9 +1,9 @@
+import 'package:delish/models/items_model.dart';
 import 'package:delish/models/restaurants_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubits/specific_items_for_restaurants/specific_items_for_restaurants_cubit.dart';
-import '../../models/food_item.dart';
 import '../../screens/food_details/food_details_view.dart';
 import 'menu_item_card.dart';
 import '../Global/restaurant_and_food_header.dart';
@@ -16,6 +16,7 @@ class RestaurantInfoViewBody extends StatefulWidget {
   @override
   State<RestaurantInfoViewBody> createState() => _RestaurantInfoViewBodyState();
 }
+
 class _RestaurantInfoViewBodyState extends State<RestaurantInfoViewBody> {
   @override
   void initState() {
@@ -69,17 +70,19 @@ class _RestaurantInfoViewBodyState extends State<RestaurantInfoViewBody> {
                           context,
                           MaterialPageRoute(
                             builder: (_) => FoodDetailsView(
-                              food: FoodItem(
-                                itemId: item.id,
+                              food: ItemModel(
+                                id: item.id,
                                 name: item.name,
                                 image: item.image,
                                 price: item.price,
-                                oldPrice: item.price,
+                                discount: item.price,
                                 description: item.description,
                                 addons: const [],
-                                restaurantId: widget
-                                    .restaurantModel
-                                    .restaurnatId,
+                                restaurantId:
+                                    widget.restaurantModel.restaurnatId,
+                                priceAfterDiscount: item.priceAfterDiscount,
+                                isPopular: item.isPopular,
+                                createdAt: item.createdAt,
                               ),
                             ),
                           ),

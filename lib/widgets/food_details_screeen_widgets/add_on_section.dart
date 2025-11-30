@@ -1,5 +1,6 @@
-import 'package:delish/models/food_item.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/add_on.dart';
 
 class AddonSection extends StatelessWidget {
   final List<AddOn> addons;

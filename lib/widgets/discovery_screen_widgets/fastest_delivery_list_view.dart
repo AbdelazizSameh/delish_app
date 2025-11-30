@@ -1,4 +1,6 @@
+import 'package:delish/Screens/restaurant_info/restaurant_info_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubits/fastest_restaurants/fastest_restaurants_cubit.dart';
@@ -19,8 +21,20 @@ class FastestDeliveryListView extends StatelessWidget {
               itemCount: state.restaurants.length,
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) =>
-                  FastestDeliveryCard(deliveryItem: state.restaurants[index]),
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          RestaurantInfoView(model: state.restaurants[index]),
+                    ),
+                  );
+                },
+                child: FastestDeliveryCard(
+                  deliveryItem: state.restaurants[index],
+                ),
+              ),
             ),
           );
         } else if (state is FastestRestaurantsLoadingState) {

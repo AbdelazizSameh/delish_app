@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delish/models/add_on.dart';
 
 class ItemModel {
   final String id;
@@ -12,6 +13,7 @@ class ItemModel {
   final double priceAfterDiscount;
   final bool isPopular;
   final Timestamp createdAt;
+  final List<AddOn> addons;
 
   ItemModel({
     this.categoryId,
@@ -25,6 +27,7 @@ class ItemModel {
     required this.priceAfterDiscount,
     required this.isPopular,
     required this.createdAt,
+    this.addons = const [],
   });
 
   factory ItemModel.fromMap(
@@ -48,3 +51,5 @@ class ItemModel {
     );
   }
 }
+
+
