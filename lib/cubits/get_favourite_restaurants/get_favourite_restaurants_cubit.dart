@@ -55,7 +55,7 @@ class GetFavouriteRestaurantsCubit extends Cubit<GetFavouriteRestaurantsState> {
 
       final res = restaurants.whereType<RestaurantModel>().toList();
 
-      log(res.toString());
+      log('fav resttttttttttttttttttt is : $res');
       emit(GetFavouriteRestaurantsLoaded(restaurants: res));
     } catch (e) {
       log("Error fetching favourite restaurants: $e");

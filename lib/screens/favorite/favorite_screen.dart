@@ -1,3 +1,4 @@
+import 'package:delish/Screens/food_details/food_details_view.dart';
 import 'package:delish/cubits/get_favourite_items/get_favourite_items_cubit.dart';
 import 'package:delish/widgets/favorite_screen_widget/food_card.dart';
 import 'package:delish/widgets/Global/search_bar.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubits/get_favourite_restaurants/get_favourite_restaurants_cubit.dart';
+import '../restaurant_info/restaurant_info_view.dart';
 
 class FavoriteViewProvider extends StatelessWidget {
   const FavoriteViewProvider({super.key});
@@ -121,13 +123,23 @@ class _FavoriteViewState extends State<FavoriteView> {
 
           return Column(
             children: items.map((item) {
-              return FoodCard(
-                imageUrl: item.image,
-                title: item.name,
-                subtitle: item.description,
-                restaurant: item.restaurantId,
-                time: "20-50 min",
-                price: item.price,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => FoodDetailsView(food: item),
+                    ),
+                  );
+                },
+                child: FoodCard(
+                  imageUrl: item.image,
+                  title: item.name,
+                  subtitle: item.description,
+                  restaurant: item.restaurantId,
+                  time: "20-50 min",
+                  price: item.price,
+                ),
               );
             }).toList(),
           );
@@ -161,13 +173,23 @@ class _FavoriteViewState extends State<FavoriteView> {
 
           return Column(
             children: restaurants.map((rest) {
-              return FoodCard(
-                imageUrl: rest.image,
-                title: rest.name,
-                subtitle: "",
-                restaurant: rest.restaurnatId,
-                time: "20-40 min",
-                rating: rest.rating,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => RestaurantInfoView(model: rest),
+                    ),
+                  );
+                },
+                child: FoodCard(
+                  imageUrl: rest.image,
+                  title: rest.name,
+                  subtitle: "",
+                  restaurant: rest.restaurnatId,
+                  time: "20-40 min",
+                  rating: rest.rating,
+                ),
               );
             }).toList(),
           );

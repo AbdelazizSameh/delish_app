@@ -1,5 +1,7 @@
-import 'package:delish/models/items_model.dart';
+import 'package:delish/Services/firebase/Addfunctions/Addfunctions.dart';
+import 'package:delish/cubits/fav_restaurant_and_item/fav_restaurant_and_item_cubit.dart';
 import 'package:delish/models/restaurants_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,9 +20,11 @@ class RestaurantInfoViewBody extends StatefulWidget {
 }
 
 class _RestaurantInfoViewBodyState extends State<RestaurantInfoViewBody> {
+  var userId = '';
   @override
   void initState() {
     super.initState();
+    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
     context.read<SpecificItemsForRestaurantsCubit>().fetchSpecificItems(
       widget.restaurantModel.restaurnatId,
     );
@@ -34,7 +38,15 @@ class _RestaurantInfoViewBodyState extends State<RestaurantInfoViewBody> {
           child: RestaurantAndFoodHeader(image: widget.restaurantModel.image),
         ),
         SliverToBoxAdapter(
-          child: RestaurantInfo(model: widget.restaurantModel),
+          child: BlocProvider(
+            create: (_) =>
+                FavRestaurantAndItemCubit(firestoreService: FirestoreService())
+                  ..loadFavorites(userId),
+            child: RestaurantInfo(
+              model: widget.restaurantModel,
+              userId: userId,
+            ),
+          ),
         ),
 
         BlocBuilder<
@@ -69,22 +81,7 @@ class _RestaurantInfoViewBodyState extends State<RestaurantInfoViewBody> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => FoodDetailsView(
-                              food: ItemModel(
-                                id: item.id,
-                                name: item.name,
-                                image: item.image,
-                                price: item.price,
-                                discount: item.price,
-                                description: item.description,
-                                addons: const [],
-                                restaurantId:
-                                    widget.restaurantModel.restaurnatId,
-                                priceAfterDiscount: item.priceAfterDiscount,
-                                isPopular: item.isPopular,
-                                createdAt: item.createdAt,
-                              ),
-                            ),
+                            builder: (_) => FoodDetailsView(food: items[index]),
                           ),
                         );
                       },

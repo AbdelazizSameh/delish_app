@@ -5,8 +5,10 @@ import 'package:delish/Screens/order_screen/order_screen.dart';
 import 'package:delish/models/items_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../Services/firebase/Addfunctions/Addfunctions.dart';
+import '../../cubits/fav_restaurant_and_item/fav_restaurant_and_item_cubit.dart';
 import '../../models/order.dart';
 import '../../widgets/Global/restaurant_and_food_header.dart';
 import '../../widgets/food_details_screeen_widgets/food_details_body.dart';
@@ -44,20 +46,47 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
           children: [
             RestaurantAndFoodHeader(image: food.image),
 
-            FoodDetailsBody(
-              food: food,
-              isFavorite: isFavorite,
-              addonSelected: addonSelected,
-              addPackage: addPackage,
-              onToggleFavorite: () => setState(() {
-                isFavorite = !isFavorite;
-              }),
-              onToggleAddon: (i) => setState(() {
-                addonSelected[i] = !addonSelected[i];
-              }),
-              onTogglePackage: () => setState(() {
-                addPackage = !addPackage;
-              }),
+            BlocProvider(
+              create: (_) => FavRestaurantAndItemCubit(
+                firestoreService: FirestoreService(),
+              )..loadFavorites(FirebaseAuth.instance.currentUser!.uid),
+              child:
+                  BlocBuilder<
+                    FavRestaurantAndItemCubit,
+                    FavRestaurantAndItemState
+                  >(
+                    builder: (context, state) {
+                      bool isFav = false;
+                      if (state is FavRestaurantAndItemLoaded) {
+                        isFav = state.favoriteItems.contains(
+                          food.id,
+                        );
+                      }
+
+                      return FoodDetailsBody(
+                        food: widget.food,
+                        isFavorite: isFav,
+                        addonSelected: addonSelected,
+                        addPackage: addPackage,
+                        onToggleFavorite: () {
+                          context
+                              .read<FavRestaurantAndItemCubit>()
+                              .toggleFavorite(
+                                userId: FirebaseAuth.instance.currentUser!.uid,
+                                type: 'item',
+                                id: widget.food.id,
+                                name: widget.food.name,
+                                restaurantId: widget.food.restaurantId,
+                              );
+                        },
+                        onToggleAddon: (i) => setState(
+                          () => addonSelected[i] = !addonSelected[i],
+                        ),
+                        onTogglePackage: () =>
+                            setState(() => addPackage = !addPackage),
+                      );
+                    },
+                  ),
             ),
           ],
         ),
@@ -108,7 +137,9 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
               log("Order added successfully with ID: ${doc.id}");
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => OrderScreen(orderId: doc.id)),
+                MaterialPageRoute(
+                  builder: (context) => OrderScreen(orderId: doc.id),
+                ),
               );
             } catch (e) {
               log(e.toString());

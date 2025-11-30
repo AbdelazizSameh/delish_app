@@ -1,3 +1,4 @@
+import 'package:delish/widgets/Global/custom_cached_image_network.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -46,21 +47,10 @@ class FoodCard extends StatelessWidget {
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
+                child: CustomCachedImageNetwork(
+                  image: imageUrl,
                   height: 160,
-                  width: double.infinity,
                   fit: BoxFit.contain,
-                  placeholder: (context, url) => Container(
-                    height: 160,
-                    color: Colors.grey.shade300,
-                    child: const Center(child: CircularProgressIndicator()),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    height: 160,
-                    color: Colors.grey.shade300,
-                    child: const Icon(Icons.image_not_supported),
-                  ),
                 ),
               ),
               const Positioned(

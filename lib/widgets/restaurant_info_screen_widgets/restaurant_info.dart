@@ -1,12 +1,17 @@
+import 'package:delish/cubits/fav_restaurant_and_item/fav_restaurant_and_item_cubit.dart';
 import 'package:delish/models/restaurants_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Global/add_favourite_widget.dart';
 import 'info_tile.dart';
 
 class RestaurantInfo extends StatelessWidget {
-  const RestaurantInfo({super.key, required this.model});
+  const RestaurantInfo({super.key, required this.model, required this.userId});
+
   final RestaurantModel model;
+  final String userId;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,23 +33,38 @@ class RestaurantInfo extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              AddFavouriteWidget(onFavTap: () {}, isFavorite: false),
+              BlocBuilder<FavRestaurantAndItemCubit, FavRestaurantAndItemState>(
+                builder: (context, state) {
+                  bool isFav = false;
+                  if (state is FavRestaurantAndItemLoaded) {
+                    isFav = state.favoriteRestaurants.contains(
+                      model.restaurnatId,
+                    );
+                  }
+
+                  return AddFavouriteWidget(
+                    isFavorite: isFav,
+                    onFavTap: () {
+                      context.read<FavRestaurantAndItemCubit>().toggleFavorite(
+                        userId: userId,
+                        type: 'restaurant',
+                        id: model.restaurnatId,
+                        name: model.name,
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
-
           const SizedBox(height: 6),
-
           Text(
             "An authentic Italian touch and delicious!",
             style: TextStyle(color: Colors.grey.shade600),
           ),
-
           const SizedBox(height: 12),
-
           InfoTile(icon: Icons.star, text: "Excellent ${model.rating}"),
-
           const SizedBox(height: 70),
-
           const Text(
             "Popular items 🔥",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

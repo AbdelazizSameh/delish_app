@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delish/models/restaurants_model.dart';
 import 'package:delish/utils/app_assets.dart';
+import 'package:delish/widgets/Global/custom_cached_image_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -49,27 +50,10 @@ class FastestDeliveryCard extends StatelessWidget {
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
-            child: CachedNetworkImage(
-              imageUrl: deliveryItem.image,
+            child: CustomCachedImageNetwork(
+              image: deliveryItem.image,
               height: 130,
-              width: double.infinity,
               fit: BoxFit.contain,
-              placeholder: (context, url) => Container(
-                height: 130,
-                color: Colors.grey[200],
-                child: const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ),
-              errorWidget: (context, url, error) => Container(
-                height: 130,
-                color: Colors.grey[200],
-                child: const Icon(
-                  Icons.broken_image,
-                  size: 40,
-                  color: Colors.grey,
-                ),
-              ),
             ),
           ),
           Padding(

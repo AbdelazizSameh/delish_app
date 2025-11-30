@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
+import '../../Services/firebase/Addfunctions/Addfunctions.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
@@ -31,12 +34,14 @@ class SectionHeader extends StatelessWidget {
                 //   restaurantName: 'Pizza King',
                 // );
 
-                // await FirestoreService().addFavoriteItem(
-                //   userId: 't4nMAvE6NuOI0KvsqIc36yvSmGX2',
-                //   itemId: 'Cja0XIq6RqqBTzUQliUB',
-                //   itemName: 'رانش تشيكن بيكون ايطالى (وسط)',
-                //   restaurantId: '1if9Yn74ix3RkGOEfEFL',
-                // );
+                await FirestoreService().addFavoriteItem(
+                  userId: 't4nMAvE6NuOI0KvsqIc36yvSmGX2',
+                  itemId: 'Cja0XIq6RqqBTzUQliUB',
+                  itemName: 'رانش تشيكن بيكون ايطالى (وسط)',
+                  restaurantId: '1if9Yn74ix3RkGOEfEFL',
+                );
+
+                log("Errrrrrrrrrrrrrrrrrrrrooooooooooorrrrrrrrrrr");
               },
               style: TextButton.styleFrom(
                 backgroundColor: const Color(0xffFED8CC),
