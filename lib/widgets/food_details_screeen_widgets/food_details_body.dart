@@ -35,7 +35,7 @@ class FoodDetailsBody extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
 
-          // Only one TitleAndFavorite here
+        
           TitleAndFavorite(
             isFavorite: isFavorite,
             onFavTap: onToggleFavorite,

@@ -3,6 +3,7 @@ import 'package:delish/models/restaurants_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../utils/app_messenger.dart';
 import '../Global/add_favourite_widget.dart';
 import 'info_tile.dart';
 
@@ -44,13 +45,32 @@ class RestaurantInfo extends StatelessWidget {
 
                   return AddFavouriteWidget(
                     isFavorite: isFav,
-                    onFavTap: () {
-                      context.read<FavRestaurantAndItemCubit>().toggleFavorite(
+                    onFavTap: () async {
+                      final cubit = context.read<FavRestaurantAndItemCubit>();
+
+                      final wasFav =
+                          cubit.state is FavRestaurantAndItemLoaded &&
+                          (cubit.state as FavRestaurantAndItemLoaded)
+                              .favoriteRestaurants
+                              .contains(model.restaurnatId);
+
+                      await cubit.toggleFavorite(
                         userId: userId,
                         type: 'restaurant',
                         id: model.restaurnatId,
                         name: model.name,
                       );
+
+                      if (context.mounted) {
+                        if (wasFav) {
+                          AppMessenger.success(
+                            context,
+                            "Removed from favorites!",
+                          );
+                        } else {
+                          AppMessenger.success(context, "Added to favorites!");
+                        }
+                      }
                     },
                   );
                 },

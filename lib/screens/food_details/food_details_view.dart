@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../Services/firebase/Addfunctions/Addfunctions.dart';
 import '../../cubits/fav_restaurant_and_item/fav_restaurant_and_item_cubit.dart';
 import '../../models/order.dart';
+import '../../utils/app_messenger.dart';
 import '../../utils/general_functions.dart';
 import '../../widgets/Global/restaurant_and_food_header.dart';
 import '../../widgets/food_details_screeen_widgets/food_details_body.dart';
@@ -67,17 +68,39 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
                         isFavorite: isFav,
                         addonSelected: addonSelected,
                         addPackage: addPackage,
-                        onToggleFavorite: () {
-                          context
-                              .read<FavRestaurantAndItemCubit>()
-                              .toggleFavorite(
-                                userId: FirebaseAuth.instance.currentUser!.uid,
-                                type: 'item',
-                                id: widget.food.id,
-                                name: widget.food.name,
-                                restaurantId: widget.food.restaurantId,
+                        onToggleFavorite: () async {
+                          final cubit = context
+                              .read<FavRestaurantAndItemCubit>();
+
+                          final wasFavorite =
+                              cubit.state is FavRestaurantAndItemLoaded &&
+                              (cubit.state as FavRestaurantAndItemLoaded)
+                                  .favoriteItems
+                                  .contains(widget.food.id);
+
+                          await cubit.toggleFavorite(
+                            userId: FirebaseAuth.instance.currentUser!.uid,
+                            type: 'item',
+                            id: widget.food.id,
+                            name: widget.food.name,
+                            restaurantId: widget.food.restaurantId,
+                          );
+
+                          if (context.mounted) {
+                            if (wasFavorite) {
+                              AppMessenger.success(
+                                context,
+                                "Removed from favorites!",
                               );
+                            } else {
+                              AppMessenger.success(
+                                context,
+                                "Added to favorites!",
+                              );
+                            }
+                          }
                         },
+
                         onToggleAddon: (i) => setState(
                           () => addonSelected[i] = !addonSelected[i],
                         ),
@@ -134,6 +157,14 @@ class FoodDetailsViewState extends State<FoodDetailsView> {
                 imageUrl: order.image,
               );
               doc.update({"orderId": doc.id});
+
+              if (context.mounted) {
+                AppMessenger.success(
+                  context,
+                  "Your order was added successfully.",
+                );
+              }
+
               log("Order added successfully with ");
               Navigator.push(
                 context,

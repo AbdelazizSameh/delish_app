@@ -1,4 +1,5 @@
 import 'package:delish/Services/firebase/GetFunctions/getfunctions.dart';
+import 'package:delish/utils/app_messenger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../models/order.dart';
@@ -62,7 +63,11 @@ class CheckoutScreen extends StatelessWidget {
                   return const Center(child: Text('Order not found.'));
                 }
                 final currentUser = FirebaseAuth.instance.currentUser?.uid;
-                final data = Order.fromMap(asyncSnapshot.data!, currentUser,null);
+                final data = Order.fromMap(
+                  asyncSnapshot.data!,
+                  currentUser,
+                  null,
+                );
                 return OrderSummaryList(order: data, orderId: orderId);
               },
             ),
@@ -75,6 +80,11 @@ class CheckoutScreen extends StatelessWidget {
         label: 'SUBMIT ORDER',
         color: primaryColor,
         onTap: () {
+          AppMessenger.success(
+            context,
+            "Your order is being prepared.\nPlease wait until it's ready for pickup.",
+          );
+
           Navigator.push(
             context,
             MaterialPageRoute(
