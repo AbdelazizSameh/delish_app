@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Order {
   String? id;
   final String restaurantId;
+
+  String? userId;
   final String idForSearch;
   final String name;
   final String image;
@@ -14,6 +16,7 @@ class Order {
   Order({
     required this.idForSearch,
     this.id,
+    this.userId,
     required this.restaurantId,
     required this.name,
     required this.image,
@@ -23,10 +26,11 @@ class Order {
     required this.createdAt,
   });
 
-  factory Order.fromMap(Map<String, dynamic> map) {
+  factory Order.fromMap(Map<String, dynamic> map, String? userId) {
     return Order(
       id: map['id'].toString(),
       restaurantId: map['restaurantId'] ?? '',
+      userId: userId ?? '',
       name: map['name'] ?? '',
       image: map['image'] ?? '',
       quantity: map['quantity'] ?? 0,

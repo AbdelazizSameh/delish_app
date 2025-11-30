@@ -51,9 +51,9 @@ class OrderScreen extends StatelessWidget {
                 } else if (!snapshot.hasData || snapshot.data == null) {
                   return const Center(child: Text('No order found.'));
                 }
+                final currentUser = FirebaseAuth.instance.currentUser?.uid;
 
-                // snapshot.data = Map<String, dynamic>
-                Order order = Order.fromMap(snapshot.data!);
+                Order order = Order.fromMap(snapshot.data!, currentUser);
 
                 return Column(
                   children: [
