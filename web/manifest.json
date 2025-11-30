@@ -1,6 +1,6 @@
 {
-    "name": "delish_app",
-    "short_name": "delish_app",
+    "name": "delish_new",
+    "short_name": "delish_new",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
