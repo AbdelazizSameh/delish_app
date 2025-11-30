@@ -2,8 +2,8 @@ import 'package:delish/Screens/food_details/food_details_view.dart';
 import 'package:delish/cubits/get_favourite_items/get_favourite_items_cubit.dart';
 import 'package:delish/widgets/favorite_screen_widget/food_card.dart';
 import 'package:delish/widgets/Global/search_bar.dart';
-import 'package:delish/widgets/favorite_screen_widget/tab_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,17 +38,16 @@ class FavoriteView extends StatefulWidget {
 
 class _FavoriteViewState extends State<FavoriteView> {
   int selectedTab = 0;
-  final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+  final search = TextEditingController();
+  final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GetFavouriteItemsCubit>(
-      context,
-    ).fetchFavouriteItems(userId);
-    BlocProvider.of<GetFavouriteRestaurantsCubit>(
-      context,
-    ).fetchFavouriteRestaurants(userId);
+    context.read<GetFavouriteItemsCubit>().fetchFavouriteItems(userId);
+    context.read<GetFavouriteRestaurantsCubit>().fetchFavouriteRestaurants(
+      userId,
+    );
   }
 
   @override
@@ -59,129 +58,61 @@ class _FavoriteViewState extends State<FavoriteView> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const CustomSearchBar(),
+
               const SizedBox(height: 20),
 
-              buildTabs(),
+              FavouriteTabBar(
+                selectedTab: selectedTab,
+                onTabSelected: (v) => setState(() => selectedTab = v),
+              ),
 
               const SizedBox(height: 20),
 
               selectedTab == 0
-                  ? buildFavouriteItems()
-                  : buildFavouriteRestaurants(),
+                  ? FavouriteFoodList(search: search.text)
+                  : FavouriteRestaurantList(search: search.text),
 
-              const SizedBox(height: 50),
+              const SizedBox(height: 40),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  Widget buildTabs() {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: Colors.black, width: 0.5),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TabButton(
-            text: "Food Items",
-            isSelected: selectedTab == 0,
-            onTap: () => setState(() => selectedTab = 0),
-          ),
-          TabButton(
-            text: "Restaurants",
-            isSelected: selectedTab == 1,
-            onTap: () => setState(() => selectedTab = 1),
-          ),
-        ],
-      ),
-    );
-  }
+class FavouriteRestaurantList extends StatelessWidget {
+  final String search;
 
-  Widget buildFavouriteItems() {
-    return BlocBuilder<GetFavouriteItemsCubit, GetFavouriteItemsState>(
-      builder: (context, state) {
-        if (state is GetFavouriteItemsLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+  const FavouriteRestaurantList({super.key, required this.search});
 
-        if (state is GetFavouriteItemsLoaded) {
-          final items = state.items;
-
-          if (items.isEmpty) {
-            return const Text("No favourite food items found.");
-          }
-
-          return Column(
-            children: items.map((item) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => FoodDetailsView(food: item),
-                    ),
-                  );
-                },
-                child: FoodCard(
-                  imageUrl: item.image,
-                  title: item.name,
-                  subtitle: item.description,
-                  restaurant: item.restaurantId,
-                  time: "20-50 min",
-                  price: item.price,
-                ),
-              );
-            }).toList(),
-          );
-        }
-
-        if (state is GetFavouriteItemsFailure) {
-          return Text("Error: ${state.message}");
-        }
-
-        return const SizedBox();
-      },
-    );
-  }
-
-  Widget buildFavouriteRestaurants() {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<
       GetFavouriteRestaurantsCubit,
       GetFavouriteRestaurantsState
     >(
       builder: (context, state) {
         if (state is GetFavouriteRestaurantsLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CupertinoActivityIndicator());
         }
 
         if (state is GetFavouriteRestaurantsLoaded) {
-          final restaurants = state.restaurants;
-
-          if (restaurants.isEmpty) {
+          if (state.restaurants.isEmpty) {
             return const Text("No favourite restaurants found.");
           }
 
           return Column(
-            children: restaurants.map((rest) {
+            children: state.restaurants.map((rest) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => RestaurantInfoView(model: rest),
-                    ),
-                  );
-                },
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => RestaurantInfoView(model: rest),
+                  ),
+                ),
                 child: FoodCard(
                   imageUrl: rest.image,
                   title: rest.name,
@@ -195,12 +126,125 @@ class _FavoriteViewState extends State<FavoriteView> {
           );
         }
 
-        if (state is GetFavouriteRestaurantsFailure) {
-          return Text("Error: ${state.message}");
+        return const SizedBox();
+      },
+    );
+  }
+}
+
+class FavouriteFoodList extends StatelessWidget {
+  final String search;
+
+  const FavouriteFoodList({super.key, required this.search});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GetFavouriteItemsCubit, GetFavouriteItemsState>(
+      builder: (context, state) {
+        if (state is GetFavouriteItemsLoading) {
+          return const Center(child: CupertinoActivityIndicator());
+        }
+
+        if (state is GetFavouriteItemsLoaded) {
+          if (state.items.isEmpty) {
+            return const Text("No favourite items found.");
+          }
+
+          return Column(
+            children: state.items.map((item) {
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => FoodDetailsView(food: item),
+                  ),
+                ),
+                child: FoodCard(
+                  imageUrl: item.image,
+                  title: item.name,
+                  subtitle: item.description,
+                  restaurant: item.restaurantId,
+                  time: "20-50 min",
+                  price: item.price,
+                ),
+              );
+            }).toList(),
+          );
         }
 
         return const SizedBox();
       },
+    );
+  }
+}
+
+class FavouriteTabBar extends StatelessWidget {
+  final int selectedTab;
+  final Function(int) onTabSelected;
+
+  const FavouriteTabBar({
+    super.key,
+    required this.selectedTab,
+    required this.onTabSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: Colors.black, width: 0.6),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () => onTabSelected(0),
+              child: AnimatedContainer(
+                decoration: BoxDecoration(
+                  color: selectedTab == 0
+                      ? Color(0xffF83B01)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                alignment: Alignment.center,
+                duration: Duration(milliseconds: 100),
+                child: Text(
+                  "Food Items",
+                  style: TextStyle(
+                    color: selectedTab == 0 ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => onTabSelected(1),
+              child: AnimatedContainer(
+                decoration: BoxDecoration(
+                  color: selectedTab == 1
+                      ? Color(0xffF83B01)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                alignment: Alignment.center,
+                duration: Duration(milliseconds: 100),
+                child: Text(
+                  "Restaurants",
+                  style: TextStyle(
+                    color: selectedTab == 1 ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

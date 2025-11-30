@@ -44,6 +44,7 @@ class GetFavouriteItemsCubit extends Cubit<GetFavouriteItemsState> {
               }
 
               log('fav items is : $items');
+              if (isClosed) return;
               emit(GetFavouriteItemsLoaded(items: items));
             },
             onError: (e) {
