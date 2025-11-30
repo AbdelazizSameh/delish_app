@@ -1,16 +1,98 @@
-# delish_new
+# DelishApp – README
 
-A new Flutter project.
+## 📌 Overview
 
-## Getting Started
+DelishApp is a mobile application built using **Flutter** that allows users to browse restaurants, explore categories, view items, manage favorites, and place orders through a clean and smooth user interface.
 
-This project is a starting point for a Flutter application.
+----------
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+-   Restaurant aggregation.
+    
+-   Browse restaurants and their categories.
+    
+-   View item details.
+    
+-   Add items to cart.
+    
+-   Place orders easily.
+    
+-   Favorites list.
+    
+-   Clean and responsive UI.
+    
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+----------
+
+## 🛠 Tech Stack
+
+-   **Flutter** (Dart)
+    
+-   **REST APIs / Firebase Firestore**
+    
+-   **State Management:** Bloc
+    
+
+----------
+
+
+
+## 💻 System Requirements
+
+### **Software Requirements**
+
+-   Flutter SDK 3.x or higher
+    
+-   Dart SDK 2.17 or higher
+    
+-   Android Studio or VS Code
+    
+-   Android SDK 33+
+    
+
+----------
+
+
+## 📱 How to Use the App
+
+1.  Open the app.
+    
+2.  Log in.
+    
+3.  Select a restaurant.
+    
+4.  Add items to the cart.
+    
+5.  Proceed to checkout.
+    
+----------
+
+## 🗂 Folder Architecture — Project Structure
+
+### **models/**
+
+Contains all data models such as RestaurantModel, CategoryModel, ItemModel, UserModel.
+
+### **services/**
+
+Contains Firebase, Firestore, and API interaction logic.
+
+### **cubits/**
+
+State management using Bloc.
+
+### **widgets/**
+
+Reusable UI components (RestaurantCard, ItemCard, etc.)
+
+### **views/**
+
+Main screens such as HomeView, RestaurantView, CartView, OrdersView.
+
+----------
+
+## 🔗 Executable Files
+
+    
+-   **github link:** [https://github.com/AbdelazizSameh/delish_app]
